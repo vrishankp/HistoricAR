@@ -1,0 +1,46 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+</head>
+
+<body>
+    <a-scene mindar-image="imageTargetSrc: targets.mind; uiScanning:no" color-space="sRGB"
+        renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false"
+        device-orientation-permission-ui="enabled: false">
+        
+        <!-- Load assets here  -->
+
+        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+        <a-entity mindar-image-target="targetIndex: 1" id="target1">
+            <!-- play the audio when the target is detected -->
+             <audio id="whistleAudio" src="mixkit-cartoon-toy-whistle-616.mp3"></audio>
+        </a-entity>
+
+    </a-scene>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Get the target element
+            const target1 = document.querySelector("#target1");
+            // Get the audio element
+            const whistleAudio = document.querySelector("#whistleAudio");
+            
+            // When the target is found, play the audio
+            target1.addEventListener("targetFound", event => {
+                whistleAudio.play();
+            });
+            
+            // Pause the audio when the target is out of frame
+            target1.addEventListener("targetLost", event => {
+                whistleAudio.pause();
+
+            });
+        });
+    </script>
+</body>
+
+</html> 
