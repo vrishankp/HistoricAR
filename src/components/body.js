@@ -4,10 +4,9 @@ import Webcam from "react-webcam";
 import '../assets/nav.css';
 import logo from '../assets/arDemo.png';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-import { config } from './config';
 
 function Content() {
-    const API_KEY = config.googleMapsApiKey;
+    const API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
     const center = {
         lat: 43.07532,
