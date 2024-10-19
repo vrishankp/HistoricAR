@@ -4,6 +4,7 @@ import Webcam from "react-webcam";
 import '../assets/nav.css';
 import logo from '../assets/arDemo.png';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import mindAR from './mindAr';
 
 function Content() {
     const API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
@@ -31,7 +32,7 @@ function Content() {
                 <h1 style={{ margin: '20px' }}>Augmented Reality Series</h1>
             </Container>
             <Container className="text-center">
-                <Webcam
+                {/* <Webcam
                     screenshotFormat="image/jpeg"
                     width={'100%'}
                     maxWidth={'10px'}
@@ -39,7 +40,8 @@ function Content() {
                     videoConstraints={{
                         facingMode: "user",
                     }}
-                />
+                /> */}
+                <mindAR></mindAR>
             </Container>
             <Container style={{ height: '400px', marginTop: '20px', marginBottom: '20px' }}>
                 <LoadScript googleMapsApiKey={API_KEY}>
