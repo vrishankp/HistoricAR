@@ -1,6 +1,5 @@
 import React from 'react';
 import { Container, Image } from 'react-bootstrap';
-import Webcam from "react-webcam";
 import '../assets/nav.css';
 import logo from '../assets/arDemo.png';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
@@ -31,6 +30,10 @@ function Content() {
                 <h1 style={{ margin: '20px' }}>Augmented Reality Series</h1>
             </Container>
             <Container className="text-center">
+                <a href="https://historicar.vrishankp.com/">
+                    <iframe title="AR Demo" src="https://historicar.vrishankp.com/" width="100%" height="500px" style={{ border: 'none' }}>
+                    </iframe>
+                </a>
                 
             </Container>
             <Container style={{ height: '400px', marginTop: '20px', marginBottom: '20px' }}>
