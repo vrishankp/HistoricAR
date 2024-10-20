@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import 'aframe';
 import 'mind-ar/dist/mindar-image-aframe.prod.js';
 
-function mindAR() {
+function mindAr() {
   const sceneRef = useRef(null);
 
   useEffect(() => {
@@ -33,4 +33,4 @@ function mindAR() {
   )
 }
 
-export default mindAR;
+export default mindAr;
