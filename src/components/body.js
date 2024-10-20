@@ -42,8 +42,8 @@ function Content() {
                 <h1 style={{ margin: '20px' }}>Augmented Reality Series</h1>
             </Container>
             <Container className="text-center">
-                <mindAR></mindAR>
-                <video></video>
+                {/* <mindAR></mindAR>
+                <video></video> */}
             </Container>
             <Container style={{ height: '400px', marginTop: '20px', marginBottom: '20px' }}>
                 <LoadScript googleMapsApiKey={API_KEY}>
