@@ -7,35 +7,45 @@
   <body>
     <a-scene mindar-image="imageTargetSrc: targets.mind; uiScanning:no" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       <a-assets>
-        <a-asset-item id="porscheModel" src="porsche.glb"></a-asset-item>
-        <a-asset-item id="houseModel" src="house.glb"></a-asset-item>
+        <a-asset-item id="birds_mp3" src="birds.mp3"></a-asset-item>
+        <a-asset-item id="lighthouse" src="forUWCapstone_glb.glb"></a-asset-item>
         <a-asset-item id="capybara_mp4" src="capybara.mp4"></a-asset-item>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <a-entity mindar-image-target="targetIndex: 1">
+      <a-entity mindar-image-target="targetIndex: 2">
           <a-video id="capybara-vid-link" src="#capybara_mp4" rotation="0 0 90" webkit-playsinline playsinline width="1" height="0.5625" scale="2 2 2" position="0 0 0"></a-video>
       </a-entity>
 
+      <a-entity mindar-image-target="targetIndex: 1">
+        <audio id="whistleAudio" src="#birds_mp3"></audio>
+      </a-entity>
+
       <a-entity mindar-image-target="targetIndex: 0">
-        <a-gltf-model rotation="0 0 0 " position="0 0 0" scale="0.15 0.15 0.15" src="#houseModel">
+        <a-gltf-model rotation="0 0 0 " position="0 0 0" scale="0.15 0.15 0.15" src="#lighthouse">
       </a-entity>
     </a-scene>
-    
-    <!-- <a-scene mindar-image="imageTargetSrc: calendar_targets.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
-      <a-assets>
-        <a-asset-item id="houseModel" src="house.glb"></a-asset-item>
-      </a-assets>
 
-      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+          // Get the target element
+          const target1 = document.querySelector("#target1");
+          // Get the audio element
+          const whistleAudio = document.querySelector("#whistleAudio");
+          
+          // When the target is found, play the audio
+          target1.addEventListener("targetFound", event => {
+              whistleAudio.play();
+          });
+          
+          // Pause the audio when the target is out of frame
+          target1.addEventListener("targetLost", event => {
+              whistleAudio.pause();
 
-      <a-entity mindar-image-target="targetIndex: 0">
-        <a-gltf-model rotation="0 0 0 " position="0 0 0" scale="0.15 0.15 0.15" src="#houseModel"
-          animation="property: position; to: 0 0.1 0.1; dur: 10000; easing: easeInOutQuad; loop: true; dir: alternate"
-        >
-      </a-entity>
-    </a-scene> -->
+          });
+      });
+  </script>
 
   </body>
 </html>
