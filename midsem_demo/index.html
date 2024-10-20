@@ -7,16 +7,16 @@
   <body>
     <a-scene mindar-image="imageTargetSrc: targets.mind; uiScanning:no" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       <a-assets>
-        <a-asset-item id="birds_mp3" src="birds.mp3"></a-asset-item>
+        <audio id="birds_mp3" src="birds.mp3"></audio>
         <a-asset-item id="lighthouse" src="forUWCapstone_glb.glb"></a-asset-item>
-        <a-asset-item id="capybara_mp4" src="capybara.mp4"></a-asset-item>
+        <!-- <video id="capybara_mp4" src="capybara.mp4" autoplay="false"></video> -->
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <a-entity mindar-image-target="targetIndex: 2" id="target2">
-          <a-video id="capybara-vid-link" src="#capybara_mp4" rotation="0 0 90" webkit-playsinline playsinline width="1" height="0.5625" scale="2 2 2" position="0 0 0"></a-video>
-      </a-entity>
+      <!-- <a-entity mindar-image-target="targetIndex: 2" id="target2">
+          <a-video id="capybara-vid-link" src="#capybara_mp4" rotation="0 0 90" width="1" height="0.5625" scale="2 2 2" position="0 0 0"></a-video>
+      </a-entity> -->
 
       <a-entity mindar-image-target="targetIndex: 1" id="target1">
         <audio id="whistleAudio" src="#birds_mp3"></audio>
@@ -31,26 +31,28 @@
       document.addEventListener("DOMContentLoaded", function() {
           // Get the target element
           const birdTarget = document.querySelector("#target1");
-          const capyTarget = document.querySelector("#target2")
+          const capyTarget = document.querySelector("#target2");
+          console.log(capyTarget)
           // Get the audio element
           const whistleAudio = document.querySelector("#whistleAudio");
-          const capyVid = document.querySelector("capybara-vid-link")
+          const capyVid = document.querySelector("#capybara-vid-link")
+          console.log(whistleAudio)
           
           // When the target is found, play the audio
           birdTarget.addEventListener("targetFound", event => {
               whistleAudio.play();
           });
-          capyTarget.addEventListener("targetFound", event => {
-              capyVid.play();
-          })
+          // capyTarget.addEventListener("targetFound", event => {
+          //     capyVid.play();
+          // })
           
           // Pause the audio when the target is out of frame
           birdTarget.addEventListener("targetLost", event => {
               whistleAudio.pause();
           });
-          capyTarget.addEventListener("targetLost", event => {
-              capyVid.pause();
-          })
+          // capyTarget.addEventListener("targetLost", event => {
+          //     capyVid.pause();
+          // })
       });
   </script>
 
