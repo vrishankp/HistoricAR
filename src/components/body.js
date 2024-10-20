@@ -18,16 +18,6 @@ function Content() {
         { id: 1, lat: 43.07573, lng: -89.40297, label: 'North Hall' },
     ];
 
-    // <Webcam
-    //     screenshotFormat="image/jpeg"
-    //     width={'100%'}
-    //     maxWidth={'10px'}
-    //     height={'auto'}
-    //     videoConstraints={{
-    //         facingMode: "user",
-    //     }}
-    // />
-
     return (
         <>
             <Container className="text-center" style={{width: '100%'}}>
@@ -42,8 +32,15 @@ function Content() {
                 <h1 style={{ margin: '20px' }}>Augmented Reality Series</h1>
             </Container>
             <Container className="text-center">
-                <mindAr></mindAr>
-                <video></video>
+                <Webcam
+                    screenshotFormat="image/jpeg"
+                    width={'100%'}
+                    maxWidth={'10px'}
+                    height={'auto'}
+                    videoConstraints={{
+                        facingMode: "user",
+                    }}
+                />
             </Container>
             <Container style={{ height: '400px', marginTop: '20px', marginBottom: '20px' }}>
                 <LoadScript googleMapsApiKey={API_KEY}>
