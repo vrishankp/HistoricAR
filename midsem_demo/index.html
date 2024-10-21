@@ -15,7 +15,7 @@
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
       <!-- <a-entity mindar-image-target="targetIndex: 2" id="target2">
-          <a-video id="capybara-vid-link" src="#capybara_mp4" rotation="0 0 90" width="1" height="0.5625" scale="2 2 2" position="0 0 0"></a-video>
+          <a-video id="capybara-vid-link" src="capybara.mp4" rotation="0 0 90" width="1" height="0.5625" scale="2 2 2" position="0 0 0"></a-video>
       </a-entity> -->
 
       <a-entity mindar-image-target="targetIndex: 1" id="target1">
@@ -31,11 +31,11 @@
       document.addEventListener("DOMContentLoaded", function() {
           // Get the target element
           const birdTarget = document.querySelector("#target1");
-          const capyTarget = document.querySelector("#target2");
-          console.log(capyTarget)
+          // const capyTarget = document.querySelector("#target2");
+          // console.log(capyTarget)
           // Get the audio element
           const whistleAudio = document.querySelector("#whistleAudio");
-          const capyVid = document.querySelector("#capybara-vid-link")
+          // const capyVid = document.querySelector("#capybara-vid-link")
           console.log(whistleAudio)
           
           // When the target is found, play the audio
