@@ -8,8 +8,9 @@
           // Get the target element
           const birdTarget = document.querySelector("#target1");
           const capyTarget = document.querySelector("#target2");
+          const lighthouseTarget = document.querySelector('#target0')
           // Get the audio element
-          const whistleAudio = document.querySelector("#whistleAudio");
+          const whistleAudio = document.querySelector("#birds_mp3");
           const capyVid = document.querySelector("#capy-mp4")
           
           // When the target is found, play the audio
@@ -19,6 +20,9 @@
           capyTarget.addEventListener("targetFound", event => {
               capyVid.play();
           })
+          lighthouseTarget.addEventListener("targetFound", event => {
+              whistleAudio.play();
+          });
           
           // Pause the audio when the target is out of frame
           birdTarget.addEventListener("targetLost", event => {
@@ -27,6 +31,10 @@
           capyTarget.addEventListener("targetLost", event => {
               capyVid.pause();
           })
+          lighthouseTarget.addEventListener("targetLost", event => {
+              whistleAudio.pause();
+          });
+
       });
     </script>
   </head>
@@ -46,11 +54,11 @@
       </a-entity>
 
       <a-entity mindar-image-target="targetIndex: 1" id="target1">
-        <audio id="whistleAudio" src="birds.mp3"></audio>
+        <!-- <audio id="whistleAudio" src="birds.mp3"></audio> -->
       </a-entity>
 
-      <a-entity mindar-image-target="targetIndex: 0">
-        <a-gltf-model rotation="0 0 0 " position="0 0 0" scale="0.15 0.15 0.15" src="#lighthouse">
+      <a-entity mindar-image-target="targetIndex: 0" id="target0">
+        <a-gltf-model rotation="0 0 0 " position="0.5 0 0" scale="0.1 0.1 0.1" src="#lighthouse">
       </a-entity>
     </a-scene>
 
