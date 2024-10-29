@@ -3,20 +3,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+          // Get the target element
+          const birdTarget = document.querySelector("#target1");
+          const capyTarget = document.querySelector("#target2");
+          // Get the audio element
+          const whistleAudio = document.querySelector("#whistleAudio");
+          const capyVid = document.querySelector("#capy-mp4")
+          
+          // When the target is found, play the audio
+          birdTarget.addEventListener("targetFound", event => {
+              whistleAudio.play();
+          });
+          capyTarget.addEventListener("targetFound", event => {
+              capyVid.play();
+          })
+          
+          // Pause the audio when the target is out of frame
+          birdTarget.addEventListener("targetLost", event => {
+              whistleAudio.pause();
+          });
+          capyTarget.addEventListener("targetLost", event => {
+              capyVid.pause();
+          })
+      });
+    </script>
   </head>
+
   <body>
-    <a-scene mindar-image="imageTargetSrc: targets.mind; uiScanning:no" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+    <a-scene mindar-image="imageTargetSrc: targets.mind; uiScanning:no; filterMinCF:0.001; filterBeta: 0.1" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       <a-assets>
         <audio id="birds_mp3" src="birds.mp3"></audio>
         <a-asset-item id="lighthouse" src="forUWCapstone_glb.glb"></a-asset-item>
-        <!-- <video id="capybara_mp4" src="capybara.mp4" autoplay="false"></video> -->
+        <video id="capy-mp4" src="capybara.mp4"></video>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <!-- <a-entity mindar-image-target="targetIndex: 2" id="target2">
-          <a-video id="capybara-vid-link" src="capybara.mp4" rotation="0 0 90" width="1" height="0.5625" scale="2 2 2" position="0 0 0"></a-video>
-      </a-entity> -->
+      <a-entity mindar-image-target="targetIndex: 2" id="target2">
+          <a-video id="capybara-vid-link" src="#capy-mp4" autoplay="false" rotation="0 0 0" width="1" height="0.5625" scale="2 2 2" position="0 0 0"></a-video>
+      </a-entity>
 
       <a-entity mindar-image-target="targetIndex: 1" id="target1">
         <audio id="whistleAudio" src="birds.mp3"></audio>
@@ -26,35 +53,6 @@
         <a-gltf-model rotation="0 0 0 " position="0 0 0" scale="0.15 0.15 0.15" src="#lighthouse">
       </a-entity>
     </a-scene>
-
-    <script>
-      document.addEventListener("DOMContentLoaded", function() {
-          // Get the target element
-          const birdTarget = document.querySelector("#target1");
-          // const capyTarget = document.querySelector("#target2");
-          // console.log(capyTarget)
-          // Get the audio element
-          const whistleAudio = document.querySelector("#whistleAudio");
-          // const capyVid = document.querySelector("#capybara-vid-link")
-          console.log(whistleAudio)
-          
-          // When the target is found, play the audio
-          birdTarget.addEventListener("targetFound", event => {
-              whistleAudio.play();
-          });
-          // capyTarget.addEventListener("targetFound", event => {
-          //     capyVid.play();
-          // })
-          
-          // Pause the audio when the target is out of frame
-          birdTarget.addEventListener("targetLost", event => {
-              whistleAudio.pause();
-          });
-          // capyTarget.addEventListener("targetLost", event => {
-          //     capyVid.pause();
-          // })
-      });
-  </script>
 
   </body>
 </html>
