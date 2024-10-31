@@ -12,35 +12,58 @@
         device-orientation-permission-ui="enabled: false">
         
         <!-- Load assets here  -->
-
         <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
         <a-entity mindar-image-target="targetIndex: 1" id="target1">
-            <!-- play the audio when the target is detected -->
-             <audio id="whistleAudio" src="mixkit-cartoon-toy-whistle-616.mp3"></audio>
+            <!-- Add the audio element as hidden since we'll play it through Web Audio API -->
+            <audio id="whistleAudio" src="mixkit-cartoon-toy-whistle-616.mp3" crossorigin="anonymous"></audio>
         </a-entity>
 
     </a-scene>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // Get the target element
+            // Get the target element and audio element
             const target1 = document.querySelector("#target1");
-            // Get the audio element
             const whistleAudio = document.querySelector("#whistleAudio");
-            
-            // When the target is found, play the audio
+
+            // Initialize AudioContext and create a PannerNode
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const audioSource = audioContext.createMediaElementSource(whistleAudio);
+            const panner = audioContext.createPanner();
+            panner.panningModel = "HRTF";
+            panner.distanceModel = "linear";
+            panner.refDistance = 1; // The distance at which the volume is 100%
+            panner.maxDistance = 10;
+
+            // Connect audio graph: audio source -> panner -> destination
+            audioSource.connect(panner);
+            panner.connect(audioContext.destination);
+
+            // Play the audio when the target is found
             target1.addEventListener("targetFound", event => {
-                whistleAudio.play();
+                audioContext.resume().then(() => {
+                    whistleAudio.play();
+                });
             });
             
-            // Pause the audio when the target is out of frame
+            // Pause the audio when the target is lost
             target1.addEventListener("targetLost", event => {
                 whistleAudio.pause();
+            });
 
+            // Update the audio position based on the target's position
+            target1.addEventListener("object3dset", () => {
+                const targetObject = target1.object3D;
+                target1.addEventListener("targetUpdated", () => {
+                    const position = targetObject.position;
+                    panner.positionX.setValueAtTime(position.x, audioContext.currentTime);
+                    panner.positionY.setValueAtTime(position.y, audioContext.currentTime);
+                    panner.positionZ.setValueAtTime(position.z, audioContext.currentTime);
+                });
             });
         });
     </script>
 </body>
 
-</html> 
+</html>
