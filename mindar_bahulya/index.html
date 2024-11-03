@@ -6,25 +6,28 @@
   
     <script>
       // Clicking plane
-      const examplePlane = document.querySelector('#example-plane');
-      examplePlane.addEventListener("click", event => {
-        console.log("plane click");
-      });
+      document.addEventListener("DOMContentLoaded", function() {
+        const examplePlane = document.querySelector('#example-plane');
+        examplePlane.addEventListener("click", event => {
+          console.log("plane click");
+        });
+      })
+      
     </script>
   </head>
 
   <body>
     <a-scene mindar-image="imageTargetSrc: targets.mind; uiScanning:no" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       <a-assets>
-        <a-asset-item id="porscheModel" src="porsche.glb"></a-asset-item>
+        <!-- <a-asset-item id="porscheModel" src="porsche.glb"></a-asset-item> -->
         <a-asset-item id="houseModel" src="house.glb"></a-asset-item>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;" raycaster="far: ${customFields.libVersion}; objects: .clickable"></a-camera>
 
-      <a-entity mindar-image-target="targetIndex: 1">
+      <!-- <a-entity mindar-image-target="targetIndex: 1">
         <a-gltf-model rotation="90 270 0 " position="0.5 0 0" scale="0.35 0.35 0.35" src="#porscheModel">
-      </a-entity>
+      </a-entity> -->
 
       <!-- Clickable Entity (house model - blue plane) -->
       <a-entity mindar-image-target="targetIndex: 0">
