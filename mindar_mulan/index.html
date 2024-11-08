@@ -3,38 +3,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-    <!-- <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const capybara_vid = document.querySelector("#capybara_mp4");
-        capybara_vid.pause()
-        const target = document.querySelector("#target")
-        target.addEventListener('targetFound', e => {
-          capybara_vid.play()
-        })
-        target.addEventListener('targetLost', e => {
-          capybara_vid.pause()
-        })
-      })
-    </script> -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+          // Get the target element
+          const birdTarget = document.querySelector("#target1");
+          const capyTarget = document.querySelector("#target2");
+          const lighthouseTarget = document.querySelector('#target0')
+          // Get the audio element
+          const whistleAudio = document.querySelector("#birds_mp3");
+          const capyVid = document.querySelector("#capy-mp4")
+          
+          // When the target is found, play the audio
+          birdTarget.addEventListener("targetFound", event => {
+              whistleAudio.play();
+          });
+          capyTarget.addEventListener("targetFound", event => {
+              capyVid.play();
+          })
+          lighthouseTarget.addEventListener("targetFound", event => {
+              whistleAudio.play();
+          });
+          
+          // Pause the audio when the target is out of frame
+          birdTarget.addEventListener("targetLost", event => {
+              whistleAudio.pause();
+          });
+          capyTarget.addEventListener("targetLost", event => {
+              capyVid.pause();
+          })
+          lighthouseTarget.addEventListener("targetLost", event => {
+              whistleAudio.pause();
+          });
+
+      });
+    </script>
   </head>
+
   <body>
-    <a-scene mindar-image="imageTargetSrc: targets.mind; uiScanning:no" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+    <a-scene mindar-image="imageTargetSrc: targets.mind; uiScanning:no; filterMinCF:0.001; filterBeta: 0.1" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       <a-assets>
-        <!-- <a-asset-item id="porscheModel" src="porsche.glb"></a-asset-item> -->
-        <a-asset-item id="houseModel" src="house.glb"></a-asset-item>
-        <!-- <video id="capybara_mp4" autoplay="false" loop="true" src="capybara.mp4"></video> -->
-        <!-- <a-asset-item id="playButton" src="play_button.png"></a-asset-item> -->
+        <audio id="birds_mp3" src="birds.mp3"></audio>
+        <a-asset-item id="lighthouse" src="forUWCapstone_glb.glb"></a-asset-item>
+        <video id="capy-mp4" src="capybara.mp4"></video>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <a-entity id="target" mindar-image-target="targetIndex: 0">
-          <!-- <a-video id="capybara-vid-link" src="#capybara_mp4" rotation="0 0 0" width="1" height="0.5625" scale="1 1 1" position="0 0 0"></a-video> -->
-          <a-gltf-model rotation="0 0 0 " position="0 0 0" scale="0.15 0.15 0.15" src="#houseModel">
+      <a-entity mindar-image-target="targetIndex: 2" id="target2">
+          <a-video id="capybara-vid-link" src="#capy-mp4" autoplay="false" rotation="0 0 0" width="1" height="0.5625" scale="2 2 2" position="0 0 0"></a-video>
       </a-entity>
 
-      <a-entity mindar-image-target="targetIndex: 0">
+      <a-entity mindar-image-target="targetIndex: 1" id="target1">
+        <!-- <audio id="whistleAudio" src="birds.mp3"></audio> -->
+      </a-entity>
+
+      <a-entity mindar-image-target="targetIndex: 0" id="target0">
+        <a-gltf-model rotation="0 0 0 " position="0.5 0 0" scale="0.07 0.07 0.07" src="#lighthouse">
       </a-entity>
     </a-scene>
+
   </body>
 </html>
