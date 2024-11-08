@@ -6,10 +6,13 @@
   
     <script>
       // Clicking plane
-      const examplePlane = document.querySelector('#example-plane');
-      examplePlane.addEventListener("click", event => {
-        console.log("plane click");
-      });
+      document.addEventListener("DOMContentLoaded", function() {
+        const examplePlane = document.querySelector('#example-plane');
+        examplePlane.addEventListener("click", event => {
+          console.log("plane click");
+        });
+      })
+      
     </script>
   </head>
 
