@@ -1,5 +1,4 @@
 <html>
-
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
@@ -8,62 +7,89 @@
 
 <body>
     <a-scene mindar-image="imageTargetSrc: targets.mind; uiScanning:no" color-space="sRGB"
-        renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false"
-        device-orientation-permission-ui="enabled: false">
+             renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false"
+             device-orientation-permission-ui="enabled: false">
         
-        <!-- Load assets here  -->
+        <!-- Load assets here -->
+        <a-assets>
+            <!-- Link to your 3D model (in .gltf or .glb format) -->
+            <a-asset-item id="lighthouse" src="forUWCapstone_glb.glb"></a-asset-item>
+        </a-assets>
+
         <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
         <a-entity mindar-image-target="targetIndex: 1" id="target1">
-            <!-- Add the audio element as hidden since we'll play it through Web Audio API -->
-            <audio id="whistleAudio" src="mixkit-cartoon-toy-whistle-616.mp3" crossorigin="anonymous"></audio>
+            <!-- Add the 3D model and configure its position and scale -->
+            <a-gltf-model src="#lighthouse"rotation="90 270 0 " position="0.5 0 0" scale="0.07 0.07 0.07" src="#lighthouse"></a-gltf-model>
+            
+            <!-- Play the audio when the target is detected -->
+            <audio src="voiceover.mp3" id="voiceoverAudio"></audio>
+            <audio src="ambient_noise.mp3" id="ambient_noise"></audio>
         </a-entity>
 
     </a-scene>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // Get the target element and audio element
+            // Get the target element and model
             const target1 = document.querySelector("#target1");
-            const whistleAudio = document.querySelector("#whistleAudio");
-
-            // Initialize AudioContext and create a PannerNode
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const audioSource = audioContext.createMediaElementSource(whistleAudio);
-            const panner = audioContext.createPanner();
-            panner.panningModel = "HRTF";
-            panner.distanceModel = "linear";
-            panner.refDistance = 1; // The distance at which the volume is 100%
-            panner.maxDistance = 10;
-
-            // Connect audio graph: audio source -> panner -> destination
-            audioSource.connect(panner);
-            panner.connect(audioContext.destination);
-
-            // Play the audio when the target is found
-            target1.addEventListener("targetFound", event => {
-                audioContext.resume().then(() => {
-                    whistleAudio.play();
-                });
+            const overlayModel = document.querySelector("#overlayModel");
+    
+            // Get the audio elements
+            const voiceoverAudio = document.querySelector("#voiceoverAudio");
+            const ambient_noise = document.querySelector("#ambient_noise");
+    
+            // Flags to check if audio is currently fading or playing
+            let isAudioPlaying = false;
+    
+            // Function to fade audio in/out
+            function fadeAudio(audioElement, fadeIn = true, duration = 2) {
+                const steps = 20;
+                const stepDuration = (duration * 1000) / steps;
+                const stepChange = fadeIn ? 1 / steps : -1 / steps;
+    
+                // Adjust initial volume based on fade direction
+                audioElement.volume = fadeIn ? 0 : 1;
+    
+                // Only play if fading in and not already playing
+                if (fadeIn && !isAudioPlaying) {
+                    audioElement.play();
+                    isAudioPlaying = true;
+                }
+    
+                // Begin fade interval
+                const fadeInterval = setInterval(() => {
+                    audioElement.volume = Math.min(1, Math.max(0, audioElement.volume + stepChange));
+    
+                    if ((fadeIn && audioElement.volume >= 1) || (!fadeIn && audioElement.volume <= 0)) {
+                        clearInterval(fadeInterval);
+    
+                        // Stop audio on complete fade-out
+                        if (!fadeIn) {
+                            audioElement.pause();
+                            // audioElement.currentTime = 0; // Reset to start for next play
+                            isAudioPlaying = false;
+                        }
+                    }
+                }, stepDuration);
+            }
+    
+            // Show/hide model and fade audio when target is found/lost
+            target1.addEventListener("targetFound", () => {
+                // overlayModel.setAttribute("visible", "true"); // Show the model
+                fadeAudio(voiceoverAudio, true);  // Fade in voiceover
+                fadeAudio(ambient_noise, true);   // Fade in ambient noise
             });
-            
-            // Pause the audio when the target is lost
-            target1.addEventListener("targetLost", event => {
-                whistleAudio.pause();
-            });
-
-            // Update the audio position based on the target's position
-            target1.addEventListener("object3dset", () => {
-                const targetObject = target1.object3D;
-                target1.addEventListener("targetUpdated", () => {
-                    const position = targetObject.position;
-                    panner.positionX.setValueAtTime(position.x, audioContext.currentTime);
-                    panner.positionY.setValueAtTime(position.y, audioContext.currentTime);
-                    panner.positionZ.setValueAtTime(position.z, audioContext.currentTime);
-                });
+    
+            target1.addEventListener("targetLost", () => {
+                // overlayModel.setAttribute("visible", "false"); // Hide the model
+                fadeAudio(voiceoverAudio, false); // Fade out voiceover
+                fadeAudio(ambient_noise, false);  // Fade out ambient noise
             });
         });
     </script>
+    
+    
+    
 </body>
-
 </html>
