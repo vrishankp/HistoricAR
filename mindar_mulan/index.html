@@ -4,42 +4,146 @@
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
     <script>
+      // volume control
+      let globalVolume = 0.5;
+      let oldVolume = 0.5;
+      let mute = false;
+      let helpVisible = false;
+
       document.addEventListener("DOMContentLoaded", function() {
-          // Get the target element
-          const birdTarget = document.querySelector("#target1");
-          const capyTarget = document.querySelector("#target2");
-          const lighthouseTarget = document.querySelector('#target0')
-          // Get the audio element
-          const whistleAudio = document.querySelector("#birds_mp3");
-          const capyVid = document.querySelector("#capy-mp4")
-          
-          // When the target is found, play the audio
-          birdTarget.addEventListener("targetFound", event => {
-              whistleAudio.play();
-          });
-          capyTarget.addEventListener("targetFound", event => {
-              capyVid.play();
-          })
-          lighthouseTarget.addEventListener("targetFound", event => {
-              whistleAudio.play();
-          });
-          
-          // Pause the audio when the target is out of frame
-          birdTarget.addEventListener("targetLost", event => {
-              whistleAudio.pause();
-          });
-          capyTarget.addEventListener("targetLost", event => {
-              capyVid.pause();
-          })
-          lighthouseTarget.addEventListener("targetLost", event => {
-              whistleAudio.pause();
-          });
+        // Get the target element
+        const birdTarget = document.querySelector("#target1");
+        const capyTarget = document.querySelector("#target2");
+        const lighthouseTarget = document.querySelector('#target0')
+        // Get the audio element
+        const whistleAudio = document.querySelector("#birds_mp3");
+        const capyVid = document.querySelector("#capy-mp4")
+        
+        // When the target is found, play the audio
+        birdTarget.addEventListener("targetFound", event => {
+            whistleAudio.volume = globalVolume;
+            whistleAudio.play();
+        });
+        capyTarget.addEventListener("targetFound", event => {
+            capyVid.volume = globalVolume;
+            capyVid.play();
+        })
+        lighthouseTarget.addEventListener("targetFound", event => {
+            whistleAudio.volume = globalVolume
+            whistleAudio.play();
+        });
+        
+        // Pause the audio when the target is out of frame
+        birdTarget.addEventListener("targetLost", event => {
+            whistleAudio.pause();
+        });
+        capyTarget.addEventListener("targetLost", event => {
+            capyVid.pause();
+        })
+        lighthouseTarget.addEventListener("targetLost", event => {
+            whistleAudio.pause();
+        });
 
       });
+
+      function helpClicked() {
+        const infoBubble = document.querySelector("#infoBubble")
+        if (!helpVisible) {
+          infoBubble.style.visibility = "visible"
+        } else {
+          infoBubble.style.visibility = "hidden"
+        }
+        helpVisible = !helpVisible
+      }
+
+      function changeVolume() {
+        const whistleAudio = document.querySelector("#birds_mp3");
+        const capyVid = document.querySelector("#capy-mp4")
+        whistleAudio.volume = globalVolume
+        capyVid.volume = globalVolume
+        console.log(globalVolume)
+      }
+
+      function volumeUp() {
+        globalVolume = Math.min(1, globalVolume + 0.1)
+        changeVolume()
+      }
+
+      function volumeDown() {
+        globalVolume = Math.max(0, globalVolume - 0.1)
+        changeVolume()
+      }
+
+      // volume control
+      function toggleMute() {
+        const volumeIcon = document.querySelector("#volumeIcon")
+        if (!mute) {
+          oldVolume = globalVolume
+          globalVolume = 0
+          volumeIcon.src = 'mute_icon.png'
+          mute = true
+        } else {
+          globalVolume = oldVolume
+          volumeIcon.src = 'volume_icon.png'
+          mute = false
+        }
+        changeVolume()
+      }
+
     </script>
+    <style>
+      .icons {
+        width: 4vw; 
+        z-index: 100;
+        cursor: pointer;
+      }
+
+      #helpIcon {
+        position: absolute;
+        top: 4vh; 
+        left: 2vw;
+        cursor: pointer; 
+      }
+
+      .volumeControls {
+        z-index: 100;
+        position: absolute;
+        top: 2vh;
+        right: 2vw;
+        display: flex;
+        flex-direction: column;
+        gap: 2vh; 
+      }
+
+      .infoBubble {
+        visibility: hidden;
+        width: 30%;
+        z-index: 99;
+        position: absolute;
+        left: 7vw;
+        top: 2vh
+      }
+
+    </style>
   </head>
 
   <body>
+    <a onclick="helpClicked()">
+      <img id="helpIcon" src="help_icon.png" alt="info icon" class="icons">
+    </a>
+    <img id="infoBubble" class="infoBubble" src="help_bubble.png" alt="help bubble">
+
+    <div class="volumeControls">
+      <a onclick="volumeUp()">
+        <img id="plusIcon" src="plus_icon.png" alt="volume up icon" class="icons">
+      </a>
+      <a onclick="toggleMute()" class="fixedUI">
+        <img id="volumeIcon" src="volume_icon.png" alt="volume icon" class="icons">
+      </a>
+      <a onclick="volumeDown()" class="fixedUI">
+        <img id="minusIcon" src="minus_icon.png" alt="volume down icon" class="icons">
+      </a>
+    </div>
     <a-scene mindar-image="imageTargetSrc: targets.mind; uiScanning:no; filterMinCF:0.001; filterBeta: 0.1" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       <a-assets>
         <audio id="birds_mp3" src="birds.mp3"></audio>
