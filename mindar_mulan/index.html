@@ -56,6 +56,7 @@
         helpVisible = !helpVisible
       }
 
+      // volume control
       function changeVolume() {
         const whistleAudio = document.querySelector("#birds_mp3");
         const capyVid = document.querySelector("#capy-mp4")
@@ -74,19 +75,17 @@
         changeVolume()
       }
 
-      // volume control
       function toggleMute() {
         const volumeIcon = document.querySelector("#volumeIcon")
         if (!mute) {
           oldVolume = globalVolume
           globalVolume = 0
           volumeIcon.src = 'mute_icon.png'
-          mute = true
         } else {
           globalVolume = oldVolume
           volumeIcon.src = 'volume_icon.png'
-          mute = false
         }
+        mute = !mute
         changeVolume()
       }
 
