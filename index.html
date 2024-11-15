@@ -3,17 +3,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
+    <style>
+      #toggleButton {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 10px 20px;
+        background-color: rgba(255, 255, 255, 0.8);
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+      }
+    </style>
   </head>
   <body>
-    <a-scene mindar-face embedded color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+    <a-scene 
+      mindar-face 
+      embedded 
+      color-space="sRGB" 
+      renderer="colorManagement: true, physicallyCorrectLights" 
+      vr-mode-ui="enabled: false" 
+      device-orientation-permission-ui="enabled: false">
+      
       <a-assets>
-	<a-asset-item id="glassesModel" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/face-tracking/assets/glasses/scene.gltf"></a-asset-item>
+        <a-asset-item id="glassesModel" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/face-tracking/assets/glasses/scene.gltf"></a-asset-item>
       </a-assets>
 
       <a-camera active="false" position="0 0 0"></a-camera>
       <a-entity mindar-face-target="anchorIndex: 168">
-	<a-gltf-model rotation="0 0 0" position="0 0 0" scale="0.01 0.01 0.01" src="#glassesModel"></a-gltf-model>
+        <a-gltf-model rotation="0 0 0" position="0 0 0" scale="0.01 0.01 0.01" src="#glassesModel"></a-gltf-model>
       </a-entity>
     </a-scene>
+
+    <button id="toggleButton">Switch Camera</button>
+
+    <script>
+      let isUsingRearCamera = true;
+      const startMindAR = (facingMode) => {
+        const mindarFaceSystem = document.querySelector("a-scene").systems["mindar-face"];
+        mindarFaceSystem.stop();
+        mindarFaceSystem.start({ video: { facingMode: { exact: facingMode } } });
+      };
+
+      document.querySelector("a-scene").addEventListener("loaded", () => {
+        startMindAR("environment");
+      });
+
+      document.getElementById("toggleButton").addEventListener("click", () => {
+        isUsingRearCamera = !isUsingRearCamera;
+        const newFacingMode = isUsingRearCamera ? "environment" : "user";
+        startMindAR(newFacingMode);
+      });
+    </script>
   </body>
 </html>
