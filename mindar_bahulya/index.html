@@ -41,7 +41,7 @@
       document.addEventListener("DOMContentLoaded", function() {
         const examplePlane = document.querySelector('#example-plane');
         examplePlane.addEventListener("click", event => {
-          console.log("plane click " + a);
+          console.log("model click " + a);
           a++; 
         });
 
@@ -95,12 +95,13 @@
         lighthouseModel.addEventListener("click", event => {
           isAudioPaused = !isAudioPaused;
           if (isAudioPaused == true) {
-            fadeAudio(voiceoverAudio, false); // Fade out voiceover
-            fadeAudio(ambient_noise, false);  // Fade out ambient noise
+            voiceoverAudio.pause();
+            ambient_noise.pause();
           } else if (isAudioPaused == false) {
-            fadeAudio(voiceoverAudio, true);  // Fade in voiceover
-            fadeAudio(ambient_noise, true);   // Fade in ambient noise
+            voiceoverAudio.play();
+            ambient_noise.play();
           }
+          console.log("Pause: ", isAudioPaused);
         });
 
         // Show/hide model and fade audio when target is found/lost
