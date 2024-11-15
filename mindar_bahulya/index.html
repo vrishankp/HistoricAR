@@ -1,6 +1,7 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8">
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
   </head>
@@ -19,8 +20,18 @@
 
       <!-- Clickable Entity (house model - blue plane) -->
       <a-entity mindar-image-target="targetIndex: 0">
-          <!-- <a-plane id="example-plane" class="clickable" color="blue" opacity="0.5" position="0 0 0" height="0.552" width="1" rotation="0 0 0"></a-plane> -->
-          <a-gltf-model id="example-plane" class="clickable" rotation="0 0 0 " position="0 0 0" scale="0.15 0.15 0.15" src="#porscheModel">
+          <a-plane id="bluePlane" color="blue" opacity="0.5" position="0.75 0 0" height="0.552" width="1" rotation="0 0 0" visible="false" 
+            opacity="0" 
+            animation__fadein="property: opacity; from: 0; to: 1; dur: 1000; startEvents: fadeIn"
+            animation__fadeout="property: opacity; from: 1; to: 0; dur: 1000; startEvents: fadeOut">
+          </a-plane>
+          <a-text id="porscheText" scale="0.15 0.15 0.15" position="0.35 0 0" visible="false" 
+            opacity="0" 
+            animation__fadein="property: opacity; from: 0; to: 1; dur: 1000; startEvents: fadeIn"
+            animation__fadeout="property: opacity; from: 1; to: 0; dur: 1000; startEvents: fadeOut"
+            value="Porsche is a renowned German automobile manufacturer celebrated for its high-performance sports cars, SUVs, and luxury sedans. Founded in 1931 by Ferdinand Porsche, the brand has become synonymous with precision engineering, innovation, and an unmistakable design language.">
+          </a-text>
+          <a-gltf-model id="porsche" class="clickable" rotation="0 0 0 " position="0 0 0" scale="0.15 0.15 0.15" src="#porscheModel">
       </a-entity>
 
       <a-entity mindar-image-target="targetIndex: 1" id="target1">
@@ -39,10 +50,30 @@
       let a = 0;
       let isAudioPaused = false;
       document.addEventListener("DOMContentLoaded", function() {
-        const examplePlane = document.querySelector('#example-plane');
-        examplePlane.addEventListener("click", event => {
-          console.log("model click " + a);
-          a++; 
+        const blue_plane = document.querySelector('#bluePlane');
+        const porsche_text = document.querySelector('#porscheText');
+
+        const porscheModel = document.querySelector('#porsche');
+        porscheModel.addEventListener("click", event => {
+          isVisible = blue_plane.getAttribute("visible");
+          console.log("isVisible: ", isVisible);
+          // blue_plane.setAttribute("visible", !isVisible);
+          // porsche_text.setAttribute("visible", !isVisible);
+          if (blue_plane.getAttribute('visible') == false) {
+            console.log("If entered");
+            blue_plane.setAttribute('visible', 'true');
+            blue_plane.emit('fadeIn');
+            porsche_text.setAttribute('visible', 'true');
+            porsche_text.emit('fadeIn');
+          } else {
+            console.log("Else entered");
+            blue_plane.emit('fadeOut');
+            porsche_text.emit('fadeOut');
+            setTimeout(() => { 
+              blue_plane.setAttribute('visible', 'false'); 
+              porsche_text.setAttribute('visible', 'false');
+            }, 1000); // Set to invisible after fade out
+          }
         });
 
         // Get the Lighthouse model
