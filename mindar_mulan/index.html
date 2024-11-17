@@ -9,6 +9,7 @@
       let oldVolume = 0.5;
       let mute = false;
       let helpVisible = false;
+      let settingsVisible = false;
 
       document.addEventListener("DOMContentLoaded", function() {
         // Get the target element
@@ -44,6 +45,12 @@
             whistleAudio.pause();
         });
 
+        const volumeSlider = document.querySelector('#volume')
+        volumeSlider.addEventListener('input', () => {
+          globalVolume = volumeSlider.value / 10
+          changeVolume()
+        })
+
       });
 
       function helpClicked() {
@@ -65,16 +72,6 @@
         console.log(globalVolume)
       }
 
-      function volumeUp() {
-        globalVolume = Math.min(1, globalVolume + 0.1)
-        changeVolume()
-      }
-
-      function volumeDown() {
-        globalVolume = Math.max(0, globalVolume - 0.1)
-        changeVolume()
-      }
-
       function toggleMute() {
         const volumeIcon = document.querySelector("#volumeIcon")
         if (!mute) {
@@ -89,60 +86,106 @@
         changeVolume()
       }
 
+      function moreClicked() {
+        const settingsDiv = document.querySelector('#settingsBox')
+        const infoBubble = document.querySelector("#infoBubble")
+        if (!settingsVisible) {
+          settingsDiv.style.visibility = "visible"
+        } else {
+          settingsDiv.style.visibility = "hidden"
+        }
+        settingsVisible = !settingsVisible
+
+        if (helpVisible) {
+          infoBubble.style.visibility = "hidden"
+          helpVisible = false
+        }
+      }
+
     </script>
     <style>
       .icons {
         width: 4vw; 
         z-index: 100;
         cursor: pointer;
+        position: absolute;
+        display: block;
       }
 
       #helpIcon {
-        position: absolute;
-        top: 4vh; 
-        left: 2vw;
-        cursor: pointer; 
+        position: static;
+        display: inline-block;
+      }
+
+      #moreIcon {
+        top: 3vh;
+        right: 2vw;
+        height: 10%;
+        width: auto;
+        margin: 0;
+      }
+
+      #volumeIcon {
+        margin: 0;
+        padding: 0;
+        display: inline-block;
+        position: static;
       }
 
       .volumeControls {
         z-index: 100;
-        position: absolute;
-        top: 2vh;
-        right: 2vw;
         display: flex;
-        flex-direction: column;
-        gap: 2vh; 
+        width: auto;
+        gap: 2vw;
+      }
+
+      #settingsBox {
+        visibility: hidden;
+        width: 30vw;
+        height: 40vh;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 50;
+        right: 1vw;
+        top: 0.5vw;
+        position: absolute;
+        padding: 1vh 2vw;
+      }
+
+      #helpDiv {
+        display: flex;
+        align-items: center;
+        gap: 2vw;
+        margin-top: 3vh;
       }
 
       .infoBubble {
         visibility: hidden;
-        width: 30%;
+        width: 34%;
         z-index: 99;
-        position: absolute;
-        left: 7vw;
-        top: 2vh
+        right: 1vw;
+        top: 45vh;
+        position: absolute
       }
 
     </style>
   </head>
 
   <body>
-    <a onclick="helpClicked()">
-      <img id="helpIcon" src="help_icon.png" alt="info icon" class="icons">
-    </a>
+    <img id="moreIcon" src="more_icon.png" alt="more icon" class="icons" onclick="moreClicked()">
+
+    <div id="settingsBox">
+      <h2 style="color: white; margin: 0; margin-bottom: 5vh; margin-top: 3vh; z-index: 100;">Settings</h2>
+      <div class="volumeControls">
+        <img id="volumeIcon" src="volume_icon.png" alt="volume icon" class="icons" onclick="toggleMute()">
+        <input id="volume" type="range" min="0" max="10" value="8" style="width: 20vw">
+      </div>
+      <div id="helpDiv">
+        <img id="helpIcon" src="help_icon.png" alt="info icon" class="icons" onclick="helpClicked()">
+        <p style="display: inline-block; margin: 0; line-height: 1; color: white">Help</p>
+      </div>
+    </div>
     <img id="infoBubble" class="infoBubble" src="help_bubble.png" alt="help bubble">
 
-    <div class="volumeControls">
-      <a onclick="volumeUp()">
-        <img id="plusIcon" src="plus_icon.png" alt="volume up icon" class="icons">
-      </a>
-      <a onclick="toggleMute()" class="fixedUI">
-        <img id="volumeIcon" src="volume_icon.png" alt="volume icon" class="icons">
-      </a>
-      <a onclick="volumeDown()" class="fixedUI">
-        <img id="minusIcon" src="minus_icon.png" alt="volume down icon" class="icons">
-      </a>
-    </div>
     <a-scene mindar-image="imageTargetSrc: targets.mind; uiScanning:no; filterMinCF:0.001; filterBeta: 0.1" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       <a-assets>
         <audio id="birds_mp3" src="birds.mp3"></audio>
