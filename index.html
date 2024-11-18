@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -38,21 +39,25 @@
     <button id="toggleButton">Switch Camera</button>
 
     <script>
-      let isUsingRearCamera = true;
-      const startMindAR = (facingMode) => {
-        const mindarFaceSystem = document.querySelector("a-scene").systems["mindar-face"];
-        mindarFaceSystem.stop();
-        mindarFaceSystem.start({ video: { facingMode: { exact: facingMode } } });
-      };
+      document.addEventListener("DOMContentLoaded", () => {
+        const sceneEl = document.querySelector("a-scene");
+        let arSystem;
 
-      document.querySelector("a-scene").addEventListener("loaded", () => {
-        startMindAR("environment");
-      });
+        // Initialize the mindar-face system after the scene is loaded
+        sceneEl.addEventListener("loaded", () => {
+          arSystem = sceneEl.systems["mindar-face"];
+          console.log("MindAR face system loaded.");
+        });
 
-      document.getElementById("toggleButton").addEventListener("click", () => {
-        isUsingRearCamera = !isUsingRearCamera;
-        const newFacingMode = isUsingRearCamera ? "environment" : "user";
-        startMindAR(newFacingMode);
+        // Add event listener to the button for switching the camera
+        document.getElementById("toggleButton").addEventListener("click", () => {
+          if (arSystem) {
+            arSystem.switchCamera(); // Switch between front and rear cameras
+            console.log("Camera switched.");
+          } else {
+            console.error("MindAR system is not initialized yet.");
+          }
+        });
       });
     </script>
   </body>
