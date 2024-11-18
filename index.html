@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -40,31 +39,20 @@
 
     <script>
       let isUsingRearCamera = true;
-
-      const toggleCamera = async () => {
-        isUsingRearCamera = !isUsingRearCamera;
-        const newFacingMode = isUsingRearCamera ? "environment" : "user";
-
-        const scene = document.querySelector("a-scene");
-        const mindarFaceSystem = scene.systems["mindar-face"];
+      const startMindAR = (facingMode) => {
+        const mindarFaceSystem = document.querySelector("a-scene").systems["mindar-face"];
         mindarFaceSystem.stop();
-        await new Promise((resolve) => setTimeout(resolve, 500));
-        
-        mindarFaceSystem.start({
-          video: {
-            facingMode: { exact: newFacingMode },
-          },
-        });
+        mindarFaceSystem.start({ video: { facingMode: { exact: facingMode } } });
       };
 
-      document.getElementById("toggleButton").addEventListener("click", toggleCamera);
-
       document.querySelector("a-scene").addEventListener("loaded", () => {
-        // Start with the rear camera initially
-        const mindarFaceSystem = document.querySelector("a-scene").systems["mindar-face"];
-        mindarFaceSystem.start({
-          video: { facingMode: { exact: "environment" } },
-        });
+        startMindAR("environment");
+      });
+
+      document.getElementById("toggleButton").addEventListener("click", () => {
+        isUsingRearCamera = !isUsingRearCamera;
+        const newFacingMode = isUsingRearCamera ? "environment" : "user";
+        startMindAR(newFacingMode);
       });
     </script>
   </body>
