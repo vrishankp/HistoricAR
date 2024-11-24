@@ -4,11 +4,11 @@
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
     <script>
-      let globalVolume = 0.5;
-      let oldVolume = 0.5;
+      let globalVolume = 0.8;
+      let oldVolume;
       let mute = false;
       let helpVisible = false;
-      let hideTimeout;
+      let settingsVisible = false;
       let isAudioPaused = false;
 
       document.addEventListener("DOMContentLoaded", function () {
@@ -18,7 +18,7 @@
         const whistleAudio = document.querySelector("#birds_mp3");
         const capyVid = document.querySelector("#capy-mp4");
         const bottomBar = document.querySelector(".bottom-bar");
-        const volumeSlider = document.querySelector("#volumeSlider");
+        const volumeSlider = document.querySelector("#volume");
         const lighthouseModel = document.querySelector("#lighthouseModel");
         const voiceoverAudio = document.querySelector("#voiceoverAudio");
         const ambient_noise = document.querySelector("#ambient_noise");
@@ -26,30 +26,10 @@
         const porsche_text = document.querySelector('#porscheText');
         const porscheModel = document.querySelector('#porsche');
 
-        function updateVolumeUI() {
-          volumeSlider.value = globalVolume * 100;
-        }
-
-        function showBottomBar() {
-          bottomBar.style.opacity = "1";
-          bottomBar.style.pointerEvents = "auto";
-          resetHideTimeout();
-        }
-
-        function hideBottomBar() {
-          bottomBar.style.opacity = "0";
-          bottomBar.style.pointerEvents = "none";
-        }
-
-        function resetHideTimeout() {
-          clearTimeout(hideTimeout);
-        // The bottom bar will disappear after 3 seconds
-          hideTimeout = setTimeout(hideBottomBar, 3000);
-        }
-
-        // show the bottom bar when the user touches the screen or moves the mouse
-        document.addEventListener("mousemove", showBottomBar);
-        document.addEventListener("touchstart", showBottomBar);
+        volumeSlider.addEventListener('input', () => {
+          globalVolume = volumeSlider.value / 10
+          changeVolume()
+        })
 
         birdTarget.addEventListener("targetFound", () => {
           whistleAudio.volume = globalVolume;
@@ -114,119 +94,145 @@
           }
         });
 
-        volumeSlider.addEventListener("input", (e) => {
-          globalVolume = e.target.value / 100;
-          whistleAudio.volume = globalVolume;
-          capyVid.volume = globalVolume;
-        });
-
-        document.querySelector("#volumeDown").addEventListener("click", () => {
-          globalVolume = Math.max(0, globalVolume - 0.1);
-          whistleAudio.volume = globalVolume;
-          capyVid.volume = globalVolume;
-          updateVolumeUI();
-        });
-
-        document.querySelector("#volumeUp").addEventListener("click", () => {
-          globalVolume = Math.min(1, globalVolume + 0.1);
-          whistleAudio.volume = globalVolume;
-          capyVid.volume = globalVolume;
-          updateVolumeUI();
-        });
-
-        resetHideTimeout(); 
       });
 
-      function helpClicked() {
-        const infoBubble = document.querySelector("#infoBubble");
-        if (!helpVisible) {
-          infoBubble.style.visibility = "visible";
+      function changeVolume() {
+        const whistleAudio = document.querySelector("#birds_mp3");
+        const capyVid = document.querySelector("#capy-mp4");
+        const voiceoverAudio = document.querySelector("#voiceoverAudio");
+        const ambient_noise = document.querySelector("#ambient_noise");
+        whistleAudio.volume = globalVolume;
+        capyVid.volume = globalVolume;
+        voiceoverAudio.volume = globalVolume;
+        ambient_noise.volume = globalVolume;
+      }
+
+      function moreClicked() {
+        const settingsDiv = document.querySelector('#settingsBox')
+        const infoBubble = document.querySelector("#infoBubble")
+        if (!settingsVisible) {
+          settingsDiv.style.visibility = "visible"
         } else {
-          infoBubble.style.visibility = "hidden";
+          settingsDiv.style.visibility = "hidden"
         }
-        helpVisible = !helpVisible;
+        settingsVisible = !settingsVisible
+
+        if (helpVisible) {
+          infoBubble.style.visibility = "hidden"
+          helpVisible = false
+        }
+      }
+
+      function helpClicked() {
+        const infoBubble = document.querySelector("#infoBubble")
+        if (!helpVisible) {
+          infoBubble.style.visibility = "visible"
+        } else {
+          infoBubble.style.visibility = "hidden"
+        }
+        helpVisible = !helpVisible
       }
 
       function toggleMute() {
         const volumeIcon = document.querySelector("#volumeIcon");
-        const volumeSlider = document.querySelector("#volumeSlider");
+        const volumeSlider = document.querySelector('#volume')
         if (!mute) {
           oldVolume = globalVolume;
+          console.log(oldVolume)
           globalVolume = 0;
           volumeSlider.value = 0;
           volumeIcon.src = 'mute_icon.png';
         } else {
           globalVolume = oldVolume;
-          volumeSlider.value = oldVolume * 100;
+          console.log(globalVolume)
+          volumeSlider.value = globalVolume * 10;
           volumeIcon.src = 'volume_icon.png';
         }
         mute = !mute;
-        document.querySelector("#birds_mp3").volume = globalVolume;
-        document.querySelector("#capy-mp4").volume = globalVolume;
+        changeVolume()
       }
     </script>
     <style>
-      body {
-        margin: 0;
-        overflow: hidden;
-      }
-
-      .bottom-bar {
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        background-color: rgba(0, 0, 0, 0.7);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 10px;
-        z-index: 100;
-        transition: opacity 0.5s;
-        opacity: 1;
-        pointer-events: auto;
-      }
-
       .icons {
-        width: 6vw;
-        margin: 0 15px;
+        width: 4vw; 
+        z-index: 100;
         cursor: pointer;
+        position: absolute;
+        display: block;
+      }
+
+      #helpIcon {
+        position: static;
+        display: inline-block;
+      }
+
+      #moreIcon {
+        top: 3vh;
+        right: 2vw;
+        height: 10%;
+        width: auto;
+        margin: 0;
+      }
+
+      #volumeIcon {
+        margin: 0;
+        padding: 0;
+        display: inline-block;
+        position: static;
+      }
+
+      .volumeControls {
+        z-index: 100;
+        display: flex;
+        width: auto;
+        gap: 2vw;
+      }
+
+      #settingsBox {
+        visibility: hidden;
+        width: 30vw;
+        height: 40vh;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 50;
+        right: 1vw;
+        top: 0.5vw;
+        position: absolute;
+        padding: 1vh 2vw;
+      }
+
+      #helpDiv {
+        display: flex;
+        align-items: center;
+        gap: 2vw;
+        margin-top: 3vh;
       }
 
       .infoBubble {
         visibility: hidden;
-        width: 30%;
+        width: 34%;
         z-index: 99;
-        position: absolute;
-        left: 50%;
-        top: 10vh;
-        transform: translateX(-50%);
-      }
-
-      #volumeSlider {
-        width: 200px;
-        margin: 0 15px;
+        right: 1vw;
+        top: 45vh;
+        position: absolute
       }
     </style>
   </head>
 
   <body>
-    <img id="infoBubble" class="infoBubble" src="help_bubble.png" alt="help bubble">
+    <img id="moreIcon" src="more_icon.png" alt="more icon" class="icons" onclick="moreClicked()">
 
-    <div class="bottom-bar">
-      <a onclick="helpClicked()">
-        <img id="helpIcon" src="help_icon.png" alt="Help Icon" class="icons">
-      </a>
-      <a id="volumeDown">
-        <img src="minus_icon.png" alt="Volume Down" class="icons">
-      </a>
-      <input id="volumeSlider" type="range" min="0" max="100" value="50">
-      <a id="volumeUp">
-        <img src="plus_icon.png" alt="Volume Up" class="icons">
-      </a>
-      <a onclick="toggleMute()">
-        <img id="volumeIcon" src="volume_icon.png" alt="Mute/Unmute Icon" class="icons">
-      </a>
+    <div id="settingsBox">
+      <h2 style="color: white; margin: 0; margin-bottom: 5vh; margin-top: 3vh; z-index: 100;">Settings</h2>
+      <div class="volumeControls">
+        <img id="volumeIcon" src="volume_icon.png" alt="volume icon" class="icons" onclick="toggleMute()">
+        <input id="volume" type="range" min="0" max="10" value="8" style="width: 20vw">
+      </div>
+      <div id="helpDiv">
+        <img id="helpIcon" src="help_icon.png" alt="info icon" class="icons" onclick="helpClicked()">
+        <p style="display: inline-block; margin: 0; line-height: 1; color: white">Help</p>
+      </div>
     </div>
+    <img id="infoBubble" class="infoBubble" src="help_bubble.png" alt="help bubble">
 
     <a-scene mindar-image="imageTargetSrc: targets.mind; uiScanning:no; filterMinCF:0.001; filterBeta: 0.1" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       <a-assets>
