@@ -10,6 +10,7 @@
       let helpVisible = false;
       let settingsVisible = false;
       let isAudioPaused = false;
+      let vidPlaying = false;
 
       document.addEventListener("DOMContentLoaded", function () {
         const birdTarget = document.querySelector("#target1");
@@ -17,6 +18,7 @@
         const lighthouseTarget = document.querySelector("#target0");
         const whistleAudio = document.querySelector("#birds_mp3");
         const capyVid = document.querySelector("#capy-mp4");
+        const capyVidObj = document.querySelector('#capybara-vid-link')
         const bottomBar = document.querySelector(".bottom-bar");
         const volumeSlider = document.querySelector("#volume");
         const lighthouseModel = document.querySelector("#lighthouseModel");
@@ -37,6 +39,7 @@
         });
         capyTarget.addEventListener("targetFound", () => {
           capyVid.volume = globalVolume;
+          vidPlaying = true;
           capyVid.play();
         });
         lighthouseTarget.addEventListener("targetFound", () => {
@@ -51,7 +54,10 @@
         });
 
         birdTarget.addEventListener("targetLost", () => whistleAudio.pause());
-        capyTarget.addEventListener("targetLost", () => capyVid.pause());
+        capyTarget.addEventListener("targetLost", () => {
+          capyVid.pause();
+          vidPlaying = false;
+        });
         lighthouseTarget.addEventListener("targetLost", () => {
           // whistleAudio.pause()
           if (isAudioPaused == false) {
@@ -93,6 +99,15 @@
             }, 1000); // Set to invisible after fade out
           }
         });
+
+        capyVidObj.addEventListener("click", e => {
+          if (vidPlaying) {
+            capyVid.pause();
+          } else {
+            capyVid.play()
+          }
+          vidPlaying = !vidPlaying;
+        })
 
       });
 
@@ -262,7 +277,7 @@
 
       <!-- Capybara Video -->
       <a-entity mindar-image-target="targetIndex: 2" id="target2">
-        <a-video id="capybara-vid-link" src="#capy-mp4" autoplay="false" rotation="0 0 0" width="1" height="0.5625" scale="2 2 2" position="0 0 0"></a-video>
+        <a-video id="capybara-vid-link" src="#capy-mp4" class="clickable" autoplay="false" rotation="0 0 0" width="1" height="0.5625" scale="2 2 2" position="0 0 0"></a-video>
       </a-entity>
 
       <!-- Porsche with Info Blurb -->
