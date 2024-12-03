@@ -13,17 +13,17 @@
       let vidPlaying = false;
 
       document.addEventListener("DOMContentLoaded", function () {
-        const birdTarget = document.querySelector("#target1");
-        const capyTarget = document.querySelector("#target2");
-        const lighthouseTarget = document.querySelector("#target0");
-        const whistleAudio = document.querySelector("#birds_mp3");
-        const capyVid = document.querySelector("#capy-mp4");
-        const capyVidObj = document.querySelector('#capybara-vid-link')
+        // const birdTarget = document.querySelector("#target1");
+        // const capyTarget = document.querySelector("#target2");
+        // const lighthouseTarget = document.querySelector("#target0");
+        // const whistleAudio = document.querySelector("#birds_mp3");
+        // const capyVid = document.querySelector("#capy-mp4");
+        // const capyVidObj = document.querySelector('#capybara-vid-link')
         const bottomBar = document.querySelector(".bottom-bar");
         const volumeSlider = document.querySelector("#volume");
-        const lighthouseModel = document.querySelector("#lighthouseModel");
-        const voiceoverAudio = document.querySelector("#voiceoverAudio");
-        const ambient_noise = document.querySelector("#ambient_noise");
+        // const lighthouseModel = document.querySelector("#lighthouseModel");
+        // const voiceoverAudio = document.querySelector("#voiceoverAudio");
+        // const ambient_noise = document.querySelector("#ambient_noise");
         const blue_plane = document.querySelector('#bluePlane');
         const porsche_text = document.querySelector('#porscheText');
         const porscheModel = document.querySelector('#porsche');
@@ -33,50 +33,50 @@
           changeVolume()
         })
 
-        birdTarget.addEventListener("targetFound", () => {
-          whistleAudio.volume = globalVolume;
-          whistleAudio.play();
-        });
-        capyTarget.addEventListener("targetFound", () => {
-          capyVid.volume = globalVolume;
-          vidPlaying = true;
-          capyVid.play();
-        });
-        lighthouseTarget.addEventListener("targetFound", () => {
-          // whistleAudio.volume = globalVolume;
-          // whistleAudio.play();
-          if (isAudioPaused == false) {
-            voiceoverAudio.volume = globalVolume;
-            ambient_noise.volume = globalVolume;
-            voiceoverAudio.play();
-            ambient_noise.play();
-          }
-        });
+        // birdTarget.addEventListener("targetFound", () => {
+        //   whistleAudio.volume = globalVolume;
+        //   whistleAudio.play();
+        // });
+        // capyTarget.addEventListener("targetFound", () => {
+        //   capyVid.volume = globalVolume;
+        //   vidPlaying = true;
+        //   capyVid.play();
+        // });
+        // lighthouseTarget.addEventListener("targetFound", () => {
+        //   // whistleAudio.volume = globalVolume;
+        //   // whistleAudio.play();
+        //   if (isAudioPaused == false) {
+        //     voiceoverAudio.volume = globalVolume;
+        //     ambient_noise.volume = globalVolume;
+        //     voiceoverAudio.play();
+        //     ambient_noise.play();
+        //   }
+        // });
 
-        birdTarget.addEventListener("targetLost", () => whistleAudio.pause());
-        capyTarget.addEventListener("targetLost", () => {
-          capyVid.pause();
-          vidPlaying = false;
-        });
-        lighthouseTarget.addEventListener("targetLost", () => {
-          // whistleAudio.pause()
-          if (isAudioPaused == false) {
-            voiceoverAudio.pause();
-            ambient_noise.pause();
-          }
-        });
+        // birdTarget.addEventListener("targetLost", () => whistleAudio.pause());
+        // capyTarget.addEventListener("targetLost", () => {
+        //   capyVid.pause();
+        //   vidPlaying = false;
+        // });
+        // lighthouseTarget.addEventListener("targetLost", () => {
+        //   // whistleAudio.pause()
+        //   if (isAudioPaused == false) {
+        //     voiceoverAudio.pause();
+        //     ambient_noise.pause();
+        //   }
+        // });
 
-        lighthouseModel.addEventListener("click", event => {
-          isAudioPaused = !isAudioPaused;
-          if (isAudioPaused == true) {
-            voiceoverAudio.pause();
-            ambient_noise.pause();
-          } else if (isAudioPaused == false) {
-            voiceoverAudio.play();
-            ambient_noise.play();
-          }
-          console.log("Pause: ", isAudioPaused);
-        });
+        // lighthouseModel.addEventListener("click", event => {
+        //   isAudioPaused = !isAudioPaused;
+        //   if (isAudioPaused == true) {
+        //     voiceoverAudio.pause();
+        //     ambient_noise.pause();
+        //   } else if (isAudioPaused == false) {
+        //     voiceoverAudio.play();
+        //     ambient_noise.play();
+        //   }
+        //   console.log("Pause: ", isAudioPaused);
+        // });
 
         porscheModel.addEventListener("click", event => {
           isVisible = blue_plane.getAttribute("visible");
@@ -100,26 +100,26 @@
           }
         });
 
-        capyVidObj.addEventListener("click", e => {
-          if (vidPlaying) {
-            capyVid.pause();
-          } else {
-            capyVid.play()
-          }
-          vidPlaying = !vidPlaying;
-        })
+      //   capyVidObj.addEventListener("click", e => {
+      //     if (vidPlaying) {
+      //       capyVid.pause();
+      //     } else {
+      //       capyVid.play()
+      //     }
+      //     vidPlaying = !vidPlaying;
+      //   })
 
       });
 
       function changeVolume() {
-        const whistleAudio = document.querySelector("#birds_mp3");
-        const capyVid = document.querySelector("#capy-mp4");
-        const voiceoverAudio = document.querySelector("#voiceoverAudio");
-        const ambient_noise = document.querySelector("#ambient_noise");
-        whistleAudio.volume = globalVolume;
-        capyVid.volume = globalVolume;
-        voiceoverAudio.volume = globalVolume;
-        ambient_noise.volume = globalVolume;
+        // const whistleAudio = document.querySelector("#birds_mp3");
+        // const capyVid = document.querySelector("#capy-mp4");
+        // const voiceoverAudio = document.querySelector("#voiceoverAudio");
+        // const ambient_noise = document.querySelector("#ambient_noise");
+        // whistleAudio.volume = globalVolume;
+        // capyVid.volume = globalVolume;
+        // voiceoverAudio.volume = globalVolume;
+        // ambient_noise.volume = globalVolume;
       }
 
       function moreClicked() {
