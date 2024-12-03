@@ -251,9 +251,9 @@
 
     <a-scene mindar-image="imageTargetSrc: targets.mind; uiScanning:no; filterMinCF:0.001; filterBeta: 0.1" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       <a-assets>
-        <audio id="birds_mp3" src="birds.mp3"></audio>
+        <!-- <audio id="birds_mp3" src="birds.mp3"></audio>
         <a-asset-item id="lighthouse" src="forUWCapstone_glb.glb"></a-asset-item>
-        <video id="capy-mp4" src="capybara.mp4"></video>
+        <video id="capy-mp4" src="capybara.mp4"></video> -->
         <a-asset-item id="porscheModel" src="porsche.glb"></a-asset-item>
       </a-assets>
 
@@ -265,7 +265,7 @@
       </a-camera>
 
       <!-- Lighthouse Model with Audio -->
-      <a-entity mindar-image-target="targetIndex: 0" id="target0">
+      <!-- <a-entity mindar-image-target="targetIndex: 0" id="target0">
         <a-gltf-model rotation="0 0 0" position="0.5 0 0" scale="0.07 0.07 0.07" src="#lighthouse" class="clickable" id="lighthouseModel"></a-gltf-model>
         <audio src="voiceover.mp3" id="voiceoverAudio"></audio>
         <audio src="ambient_noise.mp3" id="ambient_noise"></audio>
@@ -273,12 +273,12 @@
 
       <a-entity mindar-image-target="targetIndex: 1" id="target1">
         
-      </a-entity>
+      </a-entity> -->
 
       <!-- Capybara Video -->
-      <a-entity mindar-image-target="targetIndex: 2" id="target2">
+      <!-- <a-entity mindar-image-target="targetIndex: 2" id="target2">
         <a-video id="capybara-vid-link" src="#capy-mp4" class="clickable" autoplay="false" rotation="0 0 0" width="1" height="0.5625" scale="2 2 2" position="0 0 0"></a-video>
-      </a-entity>
+      </a-entity> -->
 
       <!-- Porsche with Info Blurb -->
       <a-entity mindar-image-target="targetIndex: 3" id="target1">
