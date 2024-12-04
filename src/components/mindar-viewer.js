@@ -8,6 +8,7 @@ export default () => {
   useEffect(() => {
     const sceneEl = sceneRef.current;
     const arSystem = sceneEl.systems["mindar-image-system"];
+    console.log(arSystem);
     sceneEl.addEventListener('renderstart', () => {
       arSystem.start(); // start AR 
     });
