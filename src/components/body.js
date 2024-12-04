@@ -42,6 +42,7 @@ function Content() {
                         }}
                     /> */}
                 <MindarViewer/>
+                <video></video>
             </Container>
             <Container style={{ height: '400px', marginTop: '20px', marginBottom: '20px' }}>
                 <LoadScript googleMapsApiKey={API_KEY}>
