@@ -1,0 +1,200 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <script>
+      let globalVolume = 0.8;
+      let oldVolume;
+      let mute = false;
+      let helpVisible = false;
+      let settingsVisible = false;
+      let isAudioPaused = false;
+      let vidPlaying = false;
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const capyTarget = document.querySelector("#target2");
+        const capyVid = document.querySelector("#capy-mp4");
+        const capyVidObj = document.querySelector('#capybara-vid-link')
+        const bottomBar = document.querySelector(".bottom-bar");
+        const volumeSlider = document.querySelector("#volume");
+
+        volumeSlider.addEventListener('input', () => {
+          globalVolume = volumeSlider.value / 10
+          changeVolume()
+        })
+
+        capyTarget.addEventListener("targetFound", () => {
+          capyVid.volume = globalVolume;
+          vidPlaying = true;
+          capyVid.play();
+        });
+    
+        capyTarget.addEventListener("targetLost", () => {
+          capyVid.pause();
+          vidPlaying = false;
+        });
+
+        capyVidObj.addEventListener("click", e => {
+          if (vidPlaying) {
+            capyVid.pause();
+          } else {
+            capyVid.play()
+          }
+          vidPlaying = !vidPlaying;
+        })
+
+      });
+
+      function changeVolume() {
+        const capyVid = document.querySelector("#capy-mp4");
+        capyVid.volume = globalVolume;
+      }
+
+      function moreClicked() {
+        const settingsDiv = document.querySelector('#settingsBox')
+        const infoBubble = document.querySelector("#infoBubble")
+        if (!settingsVisible) {
+          settingsDiv.style.visibility = "visible"
+        } else {
+          settingsDiv.style.visibility = "hidden"
+        }
+        settingsVisible = !settingsVisible
+
+        if (helpVisible) {
+          infoBubble.style.visibility = "hidden"
+          helpVisible = false
+        }
+      }
+
+      function helpClicked() {
+        const infoBubble = document.querySelector("#infoBubble")
+        if (!helpVisible) {
+          infoBubble.style.visibility = "visible"
+        } else {
+          infoBubble.style.visibility = "hidden"
+        }
+        helpVisible = !helpVisible
+      }
+
+      function toggleMute() {
+        const volumeIcon = document.querySelector("#volumeIcon");
+        const volumeSlider = document.querySelector('#volume')
+        if (!mute) {
+          oldVolume = globalVolume;
+          console.log(oldVolume)
+          globalVolume = 0;
+          volumeSlider.value = 0;
+          volumeIcon.src = 'mute_icon.png';
+        } else {
+          globalVolume = oldVolume;
+          console.log(globalVolume)
+          volumeSlider.value = globalVolume * 10;
+          volumeIcon.src = 'volume_icon.png';
+        }
+        mute = !mute;
+        changeVolume()
+      }
+    </script>
+    <style>
+      .icons {
+        width: 4vw; 
+        z-index: 100;
+        cursor: pointer;
+        position: absolute;
+        display: block;
+      }
+
+      #helpIcon {
+        position: static;
+        display: inline-block;
+      }
+
+      #moreIcon {
+        top: 3vh;
+        right: 2vw;
+        height: 10%;
+        width: auto;
+        margin: 0;
+      }
+
+      #volumeIcon {
+        margin: 0;
+        padding: 0;
+        display: inline-block;
+        position: static;
+      }
+
+      .volumeControls {
+        z-index: 100;
+        display: flex;
+        width: auto;
+        gap: 2vw;
+      }
+
+      #settingsBox {
+        visibility: hidden;
+        width: 30vw;
+        height: 40vh;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 50;
+        right: 1vw;
+        top: 0.5vw;
+        position: absolute;
+        padding: 1vh 2vw;
+      }
+
+      #helpDiv {
+        display: flex;
+        align-items: center;
+        gap: 2vw;
+        margin-top: 3vh;
+      }
+
+      .infoBubble {
+        visibility: hidden;
+        width: 34%;
+        z-index: 99;
+        right: 1vw;
+        top: 45vh;
+        position: absolute
+      }
+    </style>
+  </head>
+
+  <body>
+    <img id="moreIcon" src="more_icon.png" alt="more icon" class="icons" onclick="moreClicked()">
+
+    <div id="settingsBox">
+      <h2 style="color: white; margin: 0; margin-bottom: 5vh; margin-top: 3vh; z-index: 100;">Settings</h2>
+      <div class="volumeControls">
+        <img id="volumeIcon" src="volume_icon.png" alt="volume icon" class="icons" onclick="toggleMute()">
+        <input id="volume" type="range" min="0" max="10" value="8" style="width: 20vw">
+      </div>
+      <div id="helpDiv">
+        <img id="helpIcon" src="help_icon.png" alt="info icon" class="icons" onclick="helpClicked()">
+        <p style="display: inline-block; margin: 0; line-height: 1; color: white">Help</p>
+      </div>
+    </div>
+    <img id="infoBubble" class="infoBubble" src="help_bubble.png" alt="help bubble">
+
+    <a-scene mindar-image="imageTargetSrc: targets.mind; uiScanning:no; filterMinCF:0.001; filterBeta: 0.1" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+      <a-assets>
+        <video id="capy-mp4" src="capybara.mp4"></video>
+      </a-assets>
+
+      <a-camera 
+        position="0 0 0" 
+        look-controls="enabled: false" 
+        cursor="fuse: false; rayOrigin: mouse;" 
+        raycaster="far: ${customFields.libVersion}; objects: .clickable">
+      </a-camera>
+
+      <!-- Capybara Video -->
+      <a-entity mindar-image-target="targetIndex: 2" id="target2">
+        <a-video id="capybara-vid-link" src="#capy-mp4" class="clickable" autoplay="false" rotation="0 0 0" width="1" height="0.5625" scale="2 2 2" position="0 0 0"></a-video>
+      </a-entity>
+
+    </a-scene>
+  </body>
+</html>
