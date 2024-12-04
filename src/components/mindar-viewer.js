@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import 'aframe';
+import 'mind-ar/dist/mindar-image-aframe.prod.js';
 
 export default () => {
   const sceneRef = useRef(null);
@@ -16,7 +17,7 @@ export default () => {
   }, []);
 
   return (
-    <a-scene mindar-image="imageTargetSrc: targets.mind; uiScanning:no; filterMinCF:0.001; filterBeta: 0.1" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+    <a-scene ref = {sceneRef} mindar-image="imageTargetSrc: targets.mind; uiScanning:no; filterMinCF:0.001; filterBeta: 0.1" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       <a-assets>
         {/* <audio id="birds_mp3" src="birds.mp3"></audio> */}
         <a-asset-item id="lighthouse" src="forUWCapstone_glb.glb"></a-asset-item>
