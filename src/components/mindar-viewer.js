@@ -6,15 +6,16 @@ export default () => {
   const sceneRef = useRef(null);
 
   useEffect(() => {
-    const sceneEl = sceneRef.current;
-    const arSystem = sceneEl.systems["mindar-image-system"];
-    console.log(arSystem);
-    sceneEl.addEventListener('renderstart', () => {
-      arSystem.start(); // start AR 
-    });
-    return () => {
-      arSystem.stop();
-    }
+    // const sceneEl = sceneRef.current;
+    // const arSystem = sceneEl.systems["mindar-image-system"];
+    // console.log(sceneEl);
+    // console.log(arSystem);
+    // sceneEl.addEventListener('renderstart', () => {
+    //   arSystem.start(); // start AR 
+    // });
+    // return () => {
+    //   arSystem.stop();
+    // }
   }, []);
 
   return (
