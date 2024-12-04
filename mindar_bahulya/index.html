@@ -91,7 +91,7 @@
         let isAudioPlaying = false;
 
         // Function to fade audio in/out
-        function fadeAudio(audioElement, fadeIn = true, duration = 2) {
+        function fadeAudio(audioElement, fadeIn = true, duration = 1) {
             const steps = 20;
             const stepDuration = (duration * 1000) / steps;
             const stepChange = fadeIn ? 1 / steps : -1 / steps;

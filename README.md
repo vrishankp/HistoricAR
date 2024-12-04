@@ -8,6 +8,9 @@ Our goal is to make history more engaging and accessible by providing an interac
 
 This project was created by PBS Wisconsin Team 2 - HistoricAR for CS 620 (CS Capstone) at UW-Madison.
 
+## Link to the Repository
+https://github.com/vrishankp/HistoricAR
+
 ## Features
 
 - Augmented Reality Experience
