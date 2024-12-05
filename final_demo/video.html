@@ -13,10 +13,9 @@
       let vidPlaying = false;
 
       document.addEventListener("DOMContentLoaded", function () {
-        const capyTarget = document.querySelector("#target2");
-        const capyVid = document.querySelector("#capy-mp4");
-        const capyVidObj = document.querySelector('#capybara-vid-link')
-        const bottomBar = document.querySelector(".bottom-bar");
+        const lighthouse2Target = document.querySelector("#target2");
+        const lighthouseVid = document.querySelector("#lighthouse-mov");
+        const vidObj = document.querySelector('#vid-obj')
         const volumeSlider = document.querySelector("#volume");
 
         volumeSlider.addEventListener('input', () => {
@@ -24,22 +23,22 @@
           changeVolume()
         })
 
-        capyTarget.addEventListener("targetFound", () => {
-          capyVid.volume = globalVolume;
+        lighthouse2Target.addEventListener("targetFound", () => {
+          lighthouseVid.volume = globalVolume;
           vidPlaying = true;
-          capyVid.play();
+          lighthouseVid.play();
         });
     
-        capyTarget.addEventListener("targetLost", () => {
-          capyVid.pause();
+        lighthouse2Target.addEventListener("targetLost", () => {
+          lighthouseVid.pause();
           vidPlaying = false;
         });
 
-        capyVidObj.addEventListener("click", e => {
+        vidObj.addEventListener("click", e => {
           if (vidPlaying) {
-            capyVid.pause();
+            lighthouseVid.pause();
           } else {
-            capyVid.play()
+            lighthouseVid.play()
           }
           vidPlaying = !vidPlaying;
         })
@@ -178,9 +177,9 @@
     </div>
     <img id="infoBubble" class="infoBubble" src="help_bubble.png" alt="help bubble">
 
-    <a-scene mindar-image="imageTargetSrc: targets.mind; uiScanning:no; filterMinCF:0.001; filterBeta: 0.1" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+    <a-scene mindar-image="imageTargetSrc: targets2.mind; uiScanning:no; filterMinCF:0.001; filterBeta: 0.1" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       <a-assets>
-        <video id="capy-mp4" src="capybara.mp4"></video>
+        <video id="lighthouse-mov" src="lighthouseVid.MOV"></video>
       </a-assets>
 
       <a-camera 
@@ -190,9 +189,9 @@
         raycaster="far: ${customFields.libVersion}; objects: .clickable">
       </a-camera>
 
-      <!-- Capybara Video -->
+      <!-- Lighthouse Video -->
       <a-entity mindar-image-target="targetIndex: 2" id="target2">
-        <a-video id="capybara-vid-link" src="#capy-mp4" class="clickable" autoplay="false" rotation="0 0 0" width="1" height="0.5625" scale="2 2 2" position="0 0 0"></a-video>
+        <a-video id="vid-obj" src="#lighthouse-mov" class="clickable" autoplay="false" rotation="0 0 0" width="1" height="0.5625" scale="2 2 2" position="0 0 0"></a-video>
       </a-entity>
 
     </a-scene>
