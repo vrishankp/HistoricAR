@@ -254,7 +254,7 @@
         <audio id="birds_mp3" src="birds.mp3"></audio>
         <a-asset-item id="lighthouse" src="compressedLighthouseModel.glb"></a-asset-item>
         <video id="capy-mp4" src="capybara.mp4"></video>
-        <a-asset-item id="porscheModel" src="porsche.glb"></a-asset-item>
+        <a-asset-item id="porscheModel" src="owlinModel.glb"></a-asset-item>
       </a-assets>
 
       <a-camera 
@@ -282,18 +282,22 @@
 
       <!-- Porsche with Info Blurb -->
       <a-entity mindar-image-target="targetIndex: 3" id="target1">
-        <a-plane id="bluePlane" color="blue" opacity="0.5" position="0.75 0 0" height="0.552" width="1" rotation="0 0 0" visible="false" 
+        <a-plane id="bluePlane" color="blue" opacity="0.5" position="0.4 0 0" height="0.552" width="0.85" rotation="0 0 0" visible="false" 
           opacity="0" 
           animation__fadein="property: opacity; from: 0; to: 1; dur: 1000; startEvents: fadeIn"
           animation__fadeout="property: opacity; from: 1; to: 0; dur: 1000; startEvents: fadeOut">
         </a-plane>
-        <a-text id="porscheText" scale="0.15 0.15 0.15" position="0.35 0 0" visible="false" 
+        <a-text id="porscheText" scale="0.15 0.15 0.15" position="0.05 0 0" visible="false" 
           opacity="0" 
           animation__fadein="property: opacity; from: 0; to: 1; dur: 1000; startEvents: fadeIn"
           animation__fadeout="property: opacity; from: 1; to: 0; dur: 1000; startEvents: fadeOut"
-          value="Porsche is a renowned German automobile manufacturer celebrated for its high-performance sports cars, SUVs, and luxury sedans. Founded in 1931 by Ferdinand Porsche, the brand has become synonymous with precision engineering, innovation, and an unmistakable design language.">
+          value="Klyck, the Owlin Rogue (Soulknife):
+
+          Unlike most of his kin, who pursued scholarly pursuits or naturalistic studies, Klyck was drawn to the unseen and the unknown. 
+          His curiosity led him to uncover remnants of a forgotten artifact deep within the forest—a shattered crystalline shard pulsating with psionic energy.
+          When Klyck touched the shard, his mind expanded beyond the physical plane, unlocking latent psychic abilities that manifested as deadly Soulknife powers.">
         </a-text>
-        <a-gltf-model id="porsche" class="clickable" rotation="0 0 0 " position="0 0 0" scale="0.15 0.15 0.15" src="#porscheModel">
+        <a-gltf-model id="porsche" class="clickable" rotation="0 0 0 " position="-0.45 -0.15 0" scale="1.75 1.75 1.75" src="#porscheModel">
       </a-entity>
 
     </a-scene>
