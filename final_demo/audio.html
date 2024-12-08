@@ -13,7 +13,7 @@
       let vidPlaying = false;
 
       document.addEventListener("DOMContentLoaded", function () {
-        const lighthouseTarget = document.querySelector("#target0");
+        const lighthouseTarget = document.querySelector("#target1");
         const bottomBar = document.querySelector(".bottom-bar");
         const volumeSlider = document.querySelector("#volume");
         const lighthouseModel = document.querySelector("#lighthouseModel");
@@ -202,7 +202,7 @@
       </a-camera>
 
       <!-- Lighthouse Model with Audio -->
-      <a-entity mindar-image-target="targetIndex: 1" id="target0">
+      <a-entity mindar-image-target="targetIndex: 1" id="target1">
         <a-gltf-model rotation="0 160 0" position="0 0 0" scale="0.5 0.5 0.5" src="#lighthouse" class="clickable" id="lighthouseModel"></a-gltf-model>
         <audio src="LighthouseAudio.mp3" id="voiceoverAudio"></audio>
         <audio src="ambient_noise.mp3" id="ambient_noise"></audio>

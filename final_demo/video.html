@@ -13,7 +13,7 @@
       let vidPlaying = false;
 
       document.addEventListener("DOMContentLoaded", function () {
-        const lighthouse2Target = document.querySelector("#target2");
+        const lighthouse2Target = document.querySelector("#target0");
         const lighthouseVid = document.querySelector("#lighthouse-mov");
         const vidObj = document.querySelector('#vid-obj')
         const volumeSlider = document.querySelector("#volume");
@@ -190,7 +190,7 @@
       </a-camera>
 
       <!-- Lighthouse Video -->
-      <a-entity mindar-image-target="targetIndex: 0" id="target2">
+      <a-entity mindar-image-target="targetIndex: 0" id="target0">
         <a-video id="vid-obj" src="#lighthouse-mov" class="clickable" autoplay="false" rotation="0 0 0" width="1" height="0.5625" scale="2 2 2" position="0 0 0"></a-video>
       </a-entity>
 
