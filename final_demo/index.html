@@ -13,38 +13,29 @@
       let vidPlaying = false;
 
       document.addEventListener("DOMContentLoaded", function () {
-        const birdTarget = document.querySelector("#target1");
-        const capyTarget = document.querySelector("#target2");
-        const lighthouseTarget = document.querySelector("#target0");
-        const whistleAudio = document.querySelector("#birds_mp3");
-        const capyVid = document.querySelector("#capy-mp4");
-        const capyVidObj = document.querySelector('#capybara-vid-link')
         const bottomBar = document.querySelector(".bottom-bar");
         const volumeSlider = document.querySelector("#volume");
+
+        const lighthouseTarget = document.querySelector("#target1");
+        const lighthouse2Target = document.querySelector("#target0");
+
         const lighthouseModel = document.querySelector("#lighthouseModel");
         const voiceoverAudio = document.querySelector("#voiceoverAudio");
         const ambient_noise = document.querySelector("#ambient_noise");
+        
+        const lighthouseVid = document.querySelector("#lighthouse-mov");
+        const vidObj = document.querySelector('#vid-obj')
+        
         const blue_plane = document.querySelector('#bluePlane');
-        const porsche_text = document.querySelector('#porscheText');
-        const porscheModel = document.querySelector('#porsche');
+        const owlin_text = document.querySelector('#owlinText');
+        const owlinModel = document.querySelector('#owlin');
 
         volumeSlider.addEventListener('input', () => {
           globalVolume = volumeSlider.value / 10
           changeVolume()
         })
 
-        birdTarget.addEventListener("targetFound", () => {
-          whistleAudio.volume = globalVolume;
-          whistleAudio.play();
-        });
-        capyTarget.addEventListener("targetFound", () => {
-          capyVid.volume = globalVolume;
-          vidPlaying = true;
-          capyVid.play();
-        });
         lighthouseTarget.addEventListener("targetFound", () => {
-          // whistleAudio.volume = globalVolume;
-          // whistleAudio.play();
           if (isAudioPaused == false) {
             voiceoverAudio.volume = globalVolume;
             ambient_noise.volume = globalVolume;
@@ -53,13 +44,7 @@
           }
         });
 
-        birdTarget.addEventListener("targetLost", () => whistleAudio.pause());
-        capyTarget.addEventListener("targetLost", () => {
-          capyVid.pause();
-          vidPlaying = false;
-        });
         lighthouseTarget.addEventListener("targetLost", () => {
-          // whistleAudio.pause()
           if (isAudioPaused == false) {
             voiceoverAudio.pause();
             ambient_noise.pause();
@@ -77,49 +62,60 @@
           }
           console.log("Pause: ", isAudioPaused);
         });
+        
+        lighthouse2Target.addEventListener("targetFound", () => {
+          lighthouseVid.volume = globalVolume;
+          vidPlaying = true;
+          lighthouseVid.play();
+        });
+    
+        lighthouse2Target.addEventListener("targetLost", () => {
+          lighthouseVid.pause();
+          vidPlaying = false;
+        });
 
-        porscheModel.addEventListener("click", event => {
+        vidObj.addEventListener("click", e => {
+          if (vidPlaying) {
+            lighthouseVid.pause();
+          } else {
+            lighthouseVid.play()
+          }
+          vidPlaying = !vidPlaying;
+        })
+        
+        owlinModel.addEventListener("click", event => {
           isVisible = blue_plane.getAttribute("visible");
           console.log("isVisible: ", isVisible);
           // blue_plane.setAttribute("visible", !isVisible);
-          // porsche_text.setAttribute("visible", !isVisible);
+          // owlin_text.setAttribute("visible", !isVisible);
           if (blue_plane.getAttribute('visible') == false) {
             console.log("If entered");
             blue_plane.setAttribute('visible', 'true');
             blue_plane.emit('fadeIn');
-            porsche_text.setAttribute('visible', 'true');
-            porsche_text.emit('fadeIn');
+            owlin_text.setAttribute('visible', 'true');
+            owlin_text.emit('fadeIn');
           } else {
             console.log("Else entered");
             blue_plane.emit('fadeOut');
-            porsche_text.emit('fadeOut');
+            owlin_text.emit('fadeOut');
             setTimeout(() => { 
               blue_plane.setAttribute('visible', 'false'); 
-              porsche_text.setAttribute('visible', 'false');
+              owlin_text.setAttribute('visible', 'false');
             }, 1000); // Set to invisible after fade out
           }
         });
 
-        capyVidObj.addEventListener("click", e => {
-          if (vidPlaying) {
-            capyVid.pause();
-          } else {
-            capyVid.play()
-          }
-          vidPlaying = !vidPlaying;
-        })
-
       });
 
       function changeVolume() {
-        const whistleAudio = document.querySelector("#birds_mp3");
-        const capyVid = document.querySelector("#capy-mp4");
+        
         const voiceoverAudio = document.querySelector("#voiceoverAudio");
         const ambient_noise = document.querySelector("#ambient_noise");
-        whistleAudio.volume = globalVolume;
-        capyVid.volume = globalVolume;
         voiceoverAudio.volume = globalVolume;
         ambient_noise.volume = globalVolume;
+        
+        const lighthouseVid = document.querySelector("#lighthouse-mov");
+        lighthouseVid.volume = globalVolume;
       }
 
       function moreClicked() {
@@ -249,12 +245,11 @@
     </div>
     <img id="infoBubble" class="infoBubble" src="help_bubble.png" alt="help bubble">
 
-    <a-scene mindar-image="imageTargetSrc: targets.mind; uiScanning:no; filterMinCF:0.001; filterBeta: 0.1" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+    <a-scene mindar-image="imageTargetSrc: finalDemo.mind; uiScanning:no; filterMinCF:0.001; filterBeta: 0.1" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       <a-assets>
-        <audio id="birds_mp3" src="birds.mp3"></audio>
         <a-asset-item id="lighthouse" src="compressedLighthouseModel.glb"></a-asset-item>
-        <video id="capy-mp4" src="capybara.mp4"></video>
-        <a-asset-item id="porscheModel" src="owlinModel.glb"></a-asset-item>
+        <video id="lighthouse-mov" src="lighthouseVid.mp4"></video>
+        <a-asset-item id="owlinModel" src="owlinModel.glb"></a-asset-item>
       </a-assets>
 
       <a-camera 
@@ -264,30 +259,26 @@
         raycaster="far: ${customFields.libVersion}; objects: .clickable">
       </a-camera>
 
-      <!-- Lighthouse Model with Audio -->
+      <!-- Lighthouse Video -->
       <a-entity mindar-image-target="targetIndex: 0" id="target0">
-        <a-gltf-model rotation="0 0 0" position="0.5 0 0" scale="0.07 0.07 0.07" src="#lighthouse" class="clickable" id="lighthouseModel"></a-gltf-model>
+        <a-video id="vid-obj" src="#lighthouse-mov" class="clickable" autoplay="false" rotation="0 0 0" width="1" height="0.5625" scale="2 2 2" position="0 0 0"></a-video>
+      </a-entity>
+
+      <!-- Lighthouse Model with Audio -->
+      <a-entity mindar-image-target="targetIndex: 1" id="target1">
+        <a-gltf-model rotation="0 160 0" position="0 0 0" scale="0.5 0.5 0.5" src="#lighthouse" class="clickable" id="lighthouseModel"></a-gltf-model>
         <audio src="LighthouseAudio.mp3" id="voiceoverAudio"></audio>
         <audio src="ambient_noise.mp3" id="ambient_noise"></audio>
       </a-entity>
 
-      <a-entity mindar-image-target="targetIndex: 1" id="target1">
-        
-      </a-entity>
-
-      <!-- Capybara Video -->
+      <!-- Owlin with Info Blurb -->
       <a-entity mindar-image-target="targetIndex: 2" id="target2">
-        <a-video id="capybara-vid-link" src="#capy-mp4" class="clickable" autoplay="false" rotation="0 0 0" width="1" height="0.5625" scale="2 2 2" position="0 0 0"></a-video>
-      </a-entity>
-
-      <!-- Porsche with Info Blurb -->
-      <a-entity mindar-image-target="targetIndex: 3" id="target1">
         <a-plane id="bluePlane" color="blue" opacity="0.5" position="0.4 0 0" height="0.552" width="0.85" rotation="0 0 0" visible="false" 
           opacity="0" 
           animation__fadein="property: opacity; from: 0; to: 1; dur: 1000; startEvents: fadeIn"
           animation__fadeout="property: opacity; from: 1; to: 0; dur: 1000; startEvents: fadeOut">
         </a-plane>
-        <a-text id="porscheText" scale="0.15 0.15 0.15" position="0.05 0 0" visible="false" 
+        <a-text id="owlinText" scale="0.15 0.15 0.15" position="0.05 0 0" visible="false" 
           opacity="0" 
           animation__fadein="property: opacity; from: 0; to: 1; dur: 1000; startEvents: fadeIn"
           animation__fadeout="property: opacity; from: 1; to: 0; dur: 1000; startEvents: fadeOut"
@@ -297,7 +288,7 @@
           His curiosity led him to uncover remnants of a forgotten artifact deep within the forest—a shattered crystalline shard pulsating with psionic energy.
           When Klyck touched the shard, his mind expanded beyond the physical plane, unlocking latent psychic abilities that manifested as deadly Soulknife powers.">
         </a-text>
-        <a-gltf-model id="porsche" class="clickable" rotation="0 0 0 " position="-0.45 -0.15 0" scale="1.75 1.75 1.75" src="#porscheModel">
+        <a-gltf-model id="owlin" class="clickable" rotation="0 0 0 " position="-0.9 -0.45 0" scale="3.5 3.5 3.5" src="#owlinModel">
       </a-entity>
 
     </a-scene>
