@@ -55,6 +55,12 @@ Our final, integrated, working version is in the final_demo directory. The impor
 
 If you need to add a new target image, create a new .mind file by using this Image Targets Compiler tool provided by MindAR: https://hiukim.github.io/mind-ar-js-doc/tools/compile/, adding the images in the desired order. In index.html, make sure the new 3D model is attached to the corresponding index. The index of the image in the .mind file should correspond to the index on index.html.
 
+### Notes for developers:
+- To make objects interactable, they must have a class='clickable' attribute. In the code, you can then add an event listener on the object to react to a click.
+```<a-video id="vid-obj" src="#lighthouse-mov" class="clickable" autoplay="false" rotation="0 0 0" width="1" height="0.5625" scale="2 2 2" position="0 0 0"></a-video>```
+- In the ```<a-scene>``` tag, here are some attributes to note:
+    - ```mindar-image```: define your .mind file here
+
 ## How to use HistoricAR
 
 1. Visit a supported historic site
