@@ -67,18 +67,18 @@ If you need to add a new target image, create a new .mind file by using this Ima
     <a-video id="vid-obj" src="#lighthouse-mov" class="clickable" autoplay="false" rotation="0 0 0" width="1" height="0.5625" scale="2 2 2" position="0 0 0"></a-video>
     ```
 - Videos can be confusing to use. To add a flat video as an AR object attached to a tracking image, do the following:
-    1. Declare the video as an asset using the ```<video>``` tag, giving it an id and source file:
+    - Declare the video as an asset using the ```<video>``` tag, giving it an id and source file:
         ```html
         <video id="lighthouse-mov" src="lighthouseVid.mp4"></video>
         ```
-    2. Within ```<a-scene>```, declare an entity as usual, and add an ```<a-video>``` element (with an id) that uses the asset defined in the previous step:
+    - Within ```<a-scene>```, declare an entity as usual, and add an ```<a-video>``` element (with an id) that uses the asset defined in the previous step:
         ```html
         <!-- Lighthouse Video, at index 0 in finalDemo.mind -->
         <a-entity mindar-image-target="targetIndex: 0" id="target0">
             <a-video id="vid-obj" src="#lighthouse-mov" class="clickable" autoplay="false" rotation="0 0 0" width="1" height="0.5625" scale="2 2 2" position="0 0 0"></a-video>
         </a-entity>
         ```
-    3. In the Javascript, in order to play, pause, or change the volume of the video, you must refer to the video asset itself (the ```<video>``` tag), not the ```<a-video>``` element:
+    - In the Javascript, in order to play, pause, or change the volume of the video, you must refer to the video asset itself (the ```<video>``` tag), not the ```<a-video>``` element:
         ```javascript
         const lighthouseVid = document.querySelector("#lighthouse-mov"); // id of the <video> tag
         lighthouse2Target.addEventListener("targetFound", () => { lighthouseVid.play(); });
