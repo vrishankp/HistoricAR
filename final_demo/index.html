@@ -3,7 +3,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+
+    <!-- main script -->
     <script>
+      // global variables
       let globalVolume = 0.8;
       let oldVolume;
       let mute = false;
@@ -30,11 +33,13 @@
         const owlin_text = document.querySelector('#owlinText');
         const owlinModel = document.querySelector('#owlin');
 
+        // adjust global volume
         volumeSlider.addEventListener('input', () => {
           globalVolume = volumeSlider.value / 10
           changeVolume()
         })
 
+        // play voiceover and background noise when lighthouse1 is found
         lighthouseTarget.addEventListener("targetFound", () => {
           if (isAudioPaused == false) {
             voiceoverAudio.volume = globalVolume;
@@ -44,6 +49,7 @@
           }
         });
 
+        // pause audio when lighthouse1 is lost
         lighthouseTarget.addEventListener("targetLost", () => {
           if (isAudioPaused == false) {
             voiceoverAudio.pause();
@@ -51,6 +57,7 @@
           }
         });
 
+        // toggle pause/play when lighthouse model is clicked
         lighthouseModel.addEventListener("click", event => {
           isAudioPaused = !isAudioPaused;
           if (isAudioPaused == true) {
@@ -63,17 +70,20 @@
           console.log("Pause: ", isAudioPaused);
         });
         
+        // play video when lighthouse2 is found
         lighthouse2Target.addEventListener("targetFound", () => {
           lighthouseVid.volume = globalVolume;
           vidPlaying = true;
           lighthouseVid.play();
         });
     
+        // pause video when lighthouse2 is lost
         lighthouse2Target.addEventListener("targetLost", () => {
           lighthouseVid.pause();
           vidPlaying = false;
         });
 
+        // toggle play/pause when video is clicked
         vidObj.addEventListener("click", e => {
           if (vidPlaying) {
             lighthouseVid.pause();
@@ -83,6 +93,7 @@
           vidPlaying = !vidPlaying;
         })
         
+        // display blue plane with info text when owlin model is clicked
         owlinModel.addEventListener("click", event => {
           isVisible = blue_plane.getAttribute("visible");
           console.log("isVisible: ", isVisible);
@@ -107,8 +118,8 @@
 
       });
 
+      // change volume of all elements to match global volume
       function changeVolume() {
-        
         const voiceoverAudio = document.querySelector("#voiceoverAudio");
         const ambient_noise = document.querySelector("#ambient_noise");
         voiceoverAudio.volume = globalVolume;
@@ -118,6 +129,7 @@
         lighthouseVid.volume = globalVolume;
       }
 
+      // toggle settings box display
       function moreClicked() {
         const settingsDiv = document.querySelector('#settingsBox')
         const infoBubble = document.querySelector("#infoBubble")
@@ -134,6 +146,7 @@
         }
       }
 
+      // toggle help box display
       function helpClicked() {
         const infoBubble = document.querySelector("#infoBubble")
         if (!helpVisible) {
@@ -144,6 +157,7 @@
         helpVisible = !helpVisible
       }
 
+      // toggle muting
       function toggleMute() {
         const volumeIcon = document.querySelector("#volumeIcon");
         const volumeSlider = document.querySelector('#volume')
@@ -163,6 +177,8 @@
         changeVolume()
       }
     </script>
+
+    <!-- CSS styling -->
     <style>
       .icons {
         width: 4vw; 
@@ -232,6 +248,7 @@
   <body>
     <img id="moreIcon" src="more_icon.png" alt="more icon" class="icons" onclick="moreClicked()">
 
+    <!-- settings box, initially hidden until more icon is clicked -->
     <div id="settingsBox">
       <h2 style="color: white; margin: 0; margin-bottom: 5vh; margin-top: 3vh; z-index: 100;">Settings</h2>
       <div class="volumeControls">
@@ -245,13 +262,16 @@
     </div>
     <img id="infoBubble" class="infoBubble" src="help_bubble.png" alt="help bubble">
 
+    <!-- main scene; define the .mind file and specify parameters -->
     <a-scene mindar-image="imageTargetSrc: finalDemo.mind; uiScanning:no; filterMinCF:0.001; filterBeta: 0.1" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+      <!-- assets to be used -->
       <a-assets>
         <a-asset-item id="lighthouse" src="compressedLighthouseModel.glb"></a-asset-item>
         <video id="lighthouse-mov" src="lighthouseVid.mp4"></video>
         <a-asset-item id="owlinModel" src="owlinModel.glb"></a-asset-item>
       </a-assets>
 
+      <!-- camera -->
       <a-camera 
         position="0 0 0" 
         look-controls="enabled: false" 

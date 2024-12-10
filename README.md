@@ -16,7 +16,7 @@ https://github.com/vrishankp/HistoricAR
 - Augmented Reality Experience
 - Voiceover to explain more about the location
 - Video that plays over the historical site to help you learn about it 
-- Button to play and pause the audio or video
+- Playing and pausing the audio or video
 - Audio that fades in and out 
 - Face tracking and filters
 - Ability to flip cameras
@@ -48,15 +48,16 @@ This Runs the app in development mode. Open [http://localhost:3000](http://local
 ## Relevant files
 
 Our final, integrated, working version is in the final_demo directory. The important files are:
-- targets.mind: Store the target images onto which 3D models are overlayed on.
-- .gltf/.glb files: These files contain the 3D models which can be used. Any new 3D model that needs to be added should be added in this file format 
-- Index.html: Contains the main code for the AR functionality and within this file is a script tag containing the javascript for the video and audio logic.
+- finalDemo.mind: Store the target images onto which 3D models are overlayed on.
+- .gltf/.glb files: These files contain the 3D models which can be used. Any new 3D model that needs to be added should be added in this file format. 
+- index.html: Contains the main code for the AR functionality, and within this file is a script tag containing the javascript for the video and audio logic.
+- All other HTML files in this folder have isolated versions of the features present in index.html.
 
-If you need to add a new target image, add it to targets.mind and index.html and make sure the new 3D model is overlayed on the corresponding index. The index of the image in targets.mind should correspond to the index on index.html
+If you need to add a new target image, create a new .mind file by using this Image Targets Compiler tool provided by MindAR: https://hiukim.github.io/mind-ar-js-doc/tools/compile/, adding the images in the desired order. In index.html, make sure the new 3D model is attached to the corresponding index. The index of the image in the .mind file should correspond to the index on index.html.
 
 ## How to use HistoricAR
 
-1. Visit a historic site
+1. Visit a supported historic site
 2. Scan the QR code at the site
 3. Point your camera at the location 
 4. Enjoy the Augment Reality Experience
@@ -65,6 +66,9 @@ If you need to add a new target image, add it to targets.mind and index.html and
 
 1. Add support for more locations
 2. Incorporate spatial audio 
+3. Model optimization and compression
+4. Accessibility (e.g. closed captions)
+5. Animated models (e.g. scenery and characters)
 
 ## Contributors
 
