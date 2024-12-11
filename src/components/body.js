@@ -32,7 +32,7 @@ function Content() {
                 <h1 style={{ margin: '20px' }}>Augmented Reality Series</h1>
             </Container>
             <Container className="text-center">
-                {/* <Webcam
+                <Webcam
                         screenshotFormat="image/jpeg"
                         width={'100%'}
                         maxWidth={'10px'}
@@ -40,9 +40,7 @@ function Content() {
                         videoConstraints={{
                             facingMode: "environment",
                         }}
-                    /> */}
-                <MindarViewer/>
-                <video></video>
+                    />
             </Container>
             <Container style={{ height: '400px', marginTop: '20px', marginBottom: '20px' }}>
                 <LoadScript googleMapsApiKey={API_KEY}>

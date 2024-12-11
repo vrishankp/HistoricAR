@@ -48,10 +48,10 @@ This runs the app in development mode. Open [http://localhost:3000](http://local
 ## Relevant files
 
 Our final, integrated, working version is in the final_demo directory. The important files are:
-- finalDemo.mind: Store the target images onto which 3D models are overlayed on.
+- finalDemo.mind: Stores the target images for image tracking on which the 3D models and other features are overlayed.
 - .gltf/.glb files: These files contain the 3D models which can be used. Any new 3D model that needs to be added should be added in this file format. 
 - index.html: Contains the main code for the AR functionality, and within this file is a script tag containing the javascript for the video and audio logic.
-- All other HTML files in this folder have isolated versions of the features present in index.html.
+- All other HTML files in this folder have isolated versions of the features present in index.html (audio.html - Audio overlayed on 3D Model, video.html - Video with Audio, inforblurb.html - Information Text overlayed on 3D Model).
 - The index.html in the root directory contains the face-tracking feature.
 
 If you need to add a new target image, create a new .mind file by using this Image Targets Compiler tool provided by MindAR: https://hiukim.github.io/mind-ar-js-doc/tools/compile/, adding the images in the desired order. In index.html, make sure the new 3D model is attached to the corresponding index. The index of the image in the .mind file should correspond to the index on index.html.
@@ -120,7 +120,7 @@ Here are some sample images that you can test out yourself using our existing in
 
     <img src="https://github.com/vrishankp/HistoricAR/blob/main/final_demo/Index2Owlin.jpg?raw=true" alt="owlinImage" width="80%"/>
 
-## Future Plans 
+## Future Plans (What can be worked on in the future)
 
 1. Add support for more locations
 2. Incorporate spatial audio for more immersion
